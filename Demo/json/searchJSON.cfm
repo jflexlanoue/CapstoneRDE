@@ -17,12 +17,15 @@
 	    WHERE prov.ID = loc.Provider_ID
 			AND loc.ID = servloc.Location_ID
 			AND serv.ID = servloc.Service_ID
-			AND (	loc.address like <cfqueryPARAM value = "%#SearchTerm#%" CFSQLType = 'CF_SQL_VARCHAR'>
-					OR
-					serv.name like <cfqueryPARAM value = "%#SearchTerm#%" CFSQLType = 'CF_SQL_VARCHAR'>
-					OR
-					prov.name like <cfqueryPARAM value = "%#SearchTerm#%" CFSQLType = 'CF_SQL_VARCHAR'>
-				)
+			<cfloop index = "SearchToken" list = #SearchTerm# delimiters = " ">
+
+				AND (	loc.address like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
+						OR
+						serv.name like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
+						OR
+						prov.name like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
+					)
+			</cfloop>
 		ORDER BY prov.name
 	</cfquery>
 
