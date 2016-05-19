@@ -35,8 +35,8 @@ Functionality:
 <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js" type="text/javascript"></script>
 
 
-<script src="javascript/dirPagination.js" type="text/javascript"></script>
-<script src="javascript/src.js"></script>
+<script src="js/dirPagination.js" type="text/javascript"></script>
+<script src="js/src.js"></script>
 
 
 </head>
