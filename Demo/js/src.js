@@ -12,7 +12,7 @@
                 };
                 $scope.searchResults = [];
                 $scope.getData = function(){
-                	$http({url: "JSON/searchJSON.cfm?term=nj"})
+                	$http({url: "JSON/searchJSON.cfm?term=hiv"})
                 	.success(function(data,status,header,config){
                 		for (var i =0; i < data.ROWCOUNT; i++) {
                 			var sr = {
