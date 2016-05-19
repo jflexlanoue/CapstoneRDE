@@ -13,7 +13,7 @@
 
 
 <cfquery name = "LocServices" dataSource = "capstoneDB">
-			Select *
+			Select serv.name
 			FROM Loc_Service as locserv, Service as serv
 			WHERE locserv.Location_ID = <cfqueryPARAM value = "#locID#" CFSQLType = 'CF_SQL_BIGINT'>
 				AND serv.ID =locserv.Service_ID
