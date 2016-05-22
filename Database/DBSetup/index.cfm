@@ -59,11 +59,11 @@
 
 		<cfcatch type = "Database">
 
-		<cfoutput>
-			Error inserting Locations.</br></br>
-			#CFCATCH.DETAIL#
-		</cfoutput>
-</cfcatch>
+			<cfoutput>
+				Error inserting Locations.</br></br>
+				#CFCATCH.DETAIL#
+			</cfoutput>
+		</cfcatch>
 	</cftry>
 </div>
 </br>
@@ -81,8 +81,6 @@
 	</cfcatch>
 	</cftry>
 </div>
-
-
 
 
 	</body>

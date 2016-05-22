@@ -100,7 +100,7 @@ INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALU
 INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALUES (( SELECT ID FROM Provider WHERE name = 'White River Hospital'), '640 8th Street South Mocksville, NC 27028', 'Monday-Friday: 7:00am - 10:00pm', '(555)555-8750' , '47.161674' , '-97.440186' );
 INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALUES (( SELECT ID FROM Provider WHERE name = 'White Willow Medical Clinic'), '638 Franklin Court Nashua, NH 03060', 'Monday-Friday: 7:00am - 10:00pm', '(555)555-4311' , '40.849834' , '-95.65198' );
 INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALUES (( SELECT ID FROM Provider WHERE name = 'Woodland General Hospital'), '211 Route 2 Helena, MT 59601', '24/7', '(555)555-6030' , '31.527714' , '-87.22666' );
-
+UPDATE LOCATION SET geo_lat = 0, geo_lng = 0;
 	</cfquery>
 
 Locations Inserted

@@ -40,26 +40,18 @@ Modified to accept full address string as Argument
     </cffunction>
 
 
-
 	<cfquery name = "emptyGeos" datasource="capstoneDB">
-		SELECT TOP 50 * FROM Location WHERE geo_lat = 0 OR geo_lng = 0;
+		SELECT TOP 20 * FROM Location WHERE geo_lat = 0 OR geo_lng = 0;
 	</cfquery>
-
-	<cfdump var = "#emptyGeos#">
-
 
 	<cfoutput query = "emptyGeos">
 
 		<cfset georesult = #findLatLong(#address#)# >
-
-
+(#ID#):
 			#address#
 	   	 	GeoCode: #georesult.latitude#  , #georesult.longitude#
-	   	 	#ID#
 	</br>
-
 	</br>
-
 		<cfquery dataSource = "capstoneDB">
 			UPDATE Location SET geo_lat = <cfqueryPARAM value = "#georesult.latitude#" CFSQLType = 'CF_SQL_FLOAT'>,
 								geo_lng = <cfqueryPARAM value = "#georesult.longitude#" CFSQLType = 'CF_SQL_FLOAT'>
@@ -70,4 +62,4 @@ Modified to accept full address string as Argument
 	</cfoutput>
 
 
-
+Locations GeoLocated
