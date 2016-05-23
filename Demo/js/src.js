@@ -9,6 +9,7 @@
                 		Address : "",
                 		Lat : "",
                 		Long : "",
+<<<<<<< HEAD
                 		Service: "",
              };
              $scope.searchResults = [];
@@ -62,6 +63,12 @@
        		 
        		  $scope.getData = function(){
                 	$http({url: "http://67.80.252.63:8500/CapstoneRDE/Demo/JSON/searchJSON.cfm?term=nj"})
+=======
+                };
+                $scope.searchResults = [];
+                $scope.getData = function(){
+                	$http({url: "JSON/searchJSON.cfm?term=hiv"})
+>>>>>>> origin/master
                 	.success(function(data,status,header,config){
                 		for (var i =0; i < data.ROWCOUNT; i++) {
                 			var sr = {

@@ -1,13 +1,11 @@
 <cfheader name="Content-Type" value="application/json">
+<cfsetting showDebugOutput="No">
 
 <CFIF NOT IsDefined("url.term")>
 	<cfexit>
 </CFIF>
 
-
-<cftry>
 	<cfset SearchTerm = url.term>
-
 
 
 	<cfquery name = "SearchResult" dataSource = "capstoneDB">
@@ -17,20 +15,47 @@
 	    WHERE prov.ID = loc.Provider_ID
 			AND loc.ID = servloc.Location_ID
 			AND serv.ID = servloc.Service_ID
-			AND (	loc.address like <cfqueryPARAM value = "%#SearchTerm#%" CFSQLType = 'CF_SQL_VARCHAR'>
-					OR
-					serv.name like <cfqueryPARAM value = "%#SearchTerm#%" CFSQLType = 'CF_SQL_VARCHAR'>
-					OR
-					prov.name like <cfqueryPARAM value = "%#SearchTerm#%" CFSQLType = 'CF_SQL_VARCHAR'>
-				)
+			<cfloop index = "SearchToken" list = #SearchTerm# delimiters = " ">
+
+				AND (	loc.address like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
+						OR
+						serv.name like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
+						OR
+						prov.name like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
+					)
+			</cfloop>
 		ORDER BY prov.name
 	</cfquery>
+
+
+	<cfset Services = ArrayNew(1)>
+
+	<cfoutput query = "SearchResult">
+
+			<cfquery name = "LocServices" dataSource = "capstoneDB">
+				Select name
+				FROM Loc_Service as locserv, Service as serv
+				WHERE locserv.Location_ID = <cfqueryPARAM value = "#ID#" CFSQLType = 'CF_SQL_BIGINT'>
+					AND serv.ID =locserv.Service_ID
+						ORDER BY serv.name
+			</cfquery>
+
+			<cfset LocationServices = ArrayNew(1)>
+
+			<cfloop query = "LocServices">
+
+				<cfset ArrayAppend(LocationServices, #name#)>
+			</cfloop>
+
+			<cfset listformat = ArrayToList(LocationServices, "|")>
+
+			<cfset ArrayAppend(Services, listformat)>
+	</cfoutput>
+
+	<cfset QueryAddColumn(SearchResult, "services", "VarChar", Services)>
+
 
 	<cfoutput>
 		#SerializeJSON(SearchResult,true)#
 	</cfoutput>
 
-<cfcatch>
-
-	</cfcatch>
-</cftry>
