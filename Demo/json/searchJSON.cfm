@@ -1,11 +1,13 @@
 <cfheader name="Content-Type" value="application/json">
 <cfsetting showDebugOutput="No">
 
-<CFIF NOT IsDefined("url.term")>
+<CFIF NOT IsDefined("form.terms")>
 	<cfexit>
 </CFIF>
 
-	<cfset SearchTerm = url.term>
+
+	<cfset SearchTerm = form.terms>
+
 
 
 	<cfquery name = "SearchResult" dataSource = "capstoneDB">
