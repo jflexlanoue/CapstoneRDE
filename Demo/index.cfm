@@ -88,6 +88,7 @@ Functionality:
 			  data: providerData,
 			  tags: true,
 			  placeholder: 'Providers',
+			  closeOnSelect: false
 			});
 		});
 
@@ -118,6 +119,7 @@ Functionality:
 			  data: serviceData,
 			  tags: true,
 			  placeholder: 'Services',
+			  closeOnSelect: false
 			});
 		});
 
@@ -152,7 +154,7 @@ Functionality:
 			if (searchProvidersData.length > 0) {
 
 				for (var i = 0; i < searchProvidersData.length; i++) {
-					searchProviders.push(searchProvidersData[i].text);
+					searchProviders.push(searchProvidersData[i].id);
 				}
 			}
 
@@ -162,11 +164,11 @@ Functionality:
 			if (searchServicesData.length > 0) {
 
 				for (var i = 0; i < searchServicesData.length; i++) {
-					searchServices.push(searchServicesData[i].text);
+					searchServices.push(searchServicesData[i].id);
 				}
 			}
 
-			angular.element(document.getElementById('myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(' | '), searchServices.join(' | '));
+			angular.element(document.getElementById('myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','));
 
 		});
 	});
@@ -187,7 +189,7 @@ Functionality:
 	  				<span class="glyphicon glyphicon-search"></span>
 				</button>
 		</div>
-		<div name="AdvancedSearch" hidden="true" style="width:500px">
+		<div name="AdvancedSearch" style="width:500px">
 			<h2>Advanced Search</h2>
 			<h3>Providers</h3>
 			<select class="search-providers form-control selectpicker"  multiple="multiple"></select>

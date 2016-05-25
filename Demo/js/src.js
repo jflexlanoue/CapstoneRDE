@@ -48,6 +48,7 @@
        			 console.log("Requesting Data For Search: Term=" + searchTerms + " Services=" + searchServices + " Providers=" + searchProviders);
 
 
+				
        			    //Uses $.param function from NodeJS to send POST data
                 	//http://stackoverflow.com/a/31475710
        			$http({
@@ -148,7 +149,7 @@
     var infoWindow = new google.maps.InfoWindow();  
                 
 	
-	$scope.getFilteredData("hiv", "", "");                
+	$scope.getFilteredData("", "", "");                
 });
  
  
