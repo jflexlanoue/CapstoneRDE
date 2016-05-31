@@ -29,7 +29,11 @@ Functionality:
      width:450px;
   }
   .search-results { list-style-type:none !important; }
+<<<<<<< HEAD
   .fullscreen .modal-dialog {
+=======
+.fullscreen .modal-dialog {
+>>>>>>> origin/master
         margin: 0;
   margin-right: auto;
   margin-left: auto;
@@ -68,14 +72,94 @@ Functionality:
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 <script data-require="ui-bootstrap@*" data-semver="0.12.1" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"> </script>
 <script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
 <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+<<<<<<< HEAD
 <script src="dirPagination.js" type="text/javascript"></script>
 <script src="src.js"></script>
+<script type="text/javascript">
+
+	//Executes when the page First Loads
+	$(document).ready(function() {
+
+		//Load Provider Data for Advanced Search
+		var providerData = [];
+
+		$.when(getSearchProviders()).done(function() {
+			$(".search-providers").select2({
+			  data: providerData,
+			  tags: true,
+			  placeholder: 'Providers',
+			  closeOnSelect: false
+			});
+		});
+
+		function getSearchProviders() {
+			var dfr = $.Deferred();
+			$.ajax({
+				url: "json/providerlistJSON.cfm",
+			    dataType: 'json',
+			    success : function(results) {
+					for (var i =0; i < results.ROWCOUNT; i++) {
+						providerData.push({
+							id : results.DATA.ID[i],
+							text : results.DATA.NAME[i]
+						});
+					}
+					dfr.resolve();
+			    },
+			    error : function(req, status, error) { console.log("get Provider data failed!"); }
+			});
+			return dfr.promise();
+		};
+
+		//Load Services Data for Advanced Search
+		var serviceData = [];
+=======
+>>>>>>> origin/master
+
+		$.when(getSearchServices()).done(function() {
+			$(".search-services").select2({
+			  data: serviceData,
+			  tags: true,
+			  placeholder: 'Services',
+			  closeOnSelect: false
+			});
+		});
+
+		function getSearchServices() {
+			var dfr = $.Deferred();
+			$.ajax({
+				url: "json/servicelistJSON.cfm",
+			    dataType: 'json',
+			    success : function(results) {
+					for (var i =0; i < results.ROWCOUNT; i++) {
+						serviceData.push({
+							id : results.DATA.ID[i],
+							text : results.DATA.NAME[i]
+						});
+					}
+					dfr.resolve();
+			    },
+			    error : function(req, status, error) { console.log("get Service data failed!"); }
+			});
+			return dfr.promise();
+		};
+
+
+<<<<<<< HEAD
+		$("#btnSearch").on("click", function() {
+
+			var searchterms = $('.search-terms').val();
+=======
 <script type="text/javascript">
 
 	//Executes when the page First Loads
@@ -147,6 +231,9 @@ Functionality:
 		$("#btnSearch").on("click", function() {
 
 			var searchterms = $('.search-terms').val();
+
+
+>>>>>>> origin/master
 			var searchProviders = [];
 
 			var searchProvidersData = $('.search-providers').select2('data');
@@ -158,6 +245,10 @@ Functionality:
 			}
 
 			var searchServices = [];
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 			var searchServicesData = $('.search-services').select2('data');
 			if (searchServicesData.length > 0) {
 
@@ -165,6 +256,7 @@ Functionality:
 					searchServices.push(searchServicesData[i].id);
 				}
 			}
+<<<<<<< HEAD
 			angular.element(document.getElementById('myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','));
 		});
 	});
@@ -176,6 +268,25 @@ Functionality:
 	<div name="MainSearch" style="width:100%">
 		<div id="BasicSearch" style="width:500px;">
 			<h2>Basic Search</h2>
+=======
+
+			angular.element(document.getElementById('myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','));
+
+		});
+	});
+</script>
+</head>
+
+<body ng-app="myModule">
+
+
+	<div name="MainSearch" style="width:100%">
+
+		<div id="BasicSearch" style="width:500px;">
+
+			<h2>Basic Search</h2>
+
+>>>>>>> origin/master
 				<input class="form-control search-terms" placeholder="Search" type="text" />
 				<button type="button" class="btn btn-default"  id="btnSearch" >
 	  				<span class="glyphicon glyphicon-search"></span>
@@ -189,6 +300,7 @@ Functionality:
 			<select class="search-services form-control selectpicker"  multiple="multiple"></select>
 		</div>
 	</div>
+<<<<<<< HEAD
 	<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv">
 		<h1>Search Results</h1>
 		<div class="modal fade " id="service-info" tabindex='-1'>
@@ -197,6 +309,20 @@ Functionality:
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 							{{$scope.activeResults.Name}}
+=======
+
+
+
+
+	<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv">
+		<h1>Search Results</h1>
+		<div class="modal fade " id="service-info" tabindex='-1'>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+							{{$scope.activeResults.Name}}
+
+>>>>>>> origin/master
 						<h2>{{activeResults.Name}}</h2>
 					</div>
 					<div class="modal-body">
@@ -204,17 +330,28 @@ Functionality:
 							<div class="col-sm-5">
 								<ul>
 									<li style="cursor:pointer;"><strong>Address:</strong>
+<<<<<<< HEAD
 									<a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">{{ activeResults.Address }}</a> </li>
+=======
+									 <a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">{{ activeResults.Address }}</a> </li>
+>>>>>>> origin/master
 									<li><strong>Hours: </strong><div ng-bind-html='activeResults.Hours'></div> </li>
 									<li><strong>Phone: </strong> {{ activeResults.Phone }} </li>
 									<li><strong>Website: </strong><a ng-href="{{activeResults.WebSite}}" target="_blank">{{ activeResults.WebSite }}</a></li>
 								</ul>
 							</div>
 							<div class="col-sm-7">
+<<<<<<< HEAD
 			                <div id="map2" class="img-responsive visible-xs visible-sm"> </div>
 							<div>
 								<h2 class="lead" align="center"><b> Services </b></h2>
 							</div>
+=======
+								<div>
+									<h2 class="lead" align="center"><b> Services </b></h2>
+								</div>
+
+>>>>>>> origin/master
 								<ul class="list-group">
 									<li class="list-group-item"><div ng-bind-html ='activeResults.Service'></div></li>
 								</ul>
@@ -241,17 +378,30 @@ Functionality:
 				<dir-pagination-controls
 			       max-size="10"
 			       direction-links="true"
+<<<<<<< HEAD
 			       boundary-links="true">
+=======
+			       boundary-links="true" >
+>>>>>>> origin/master
     			</dir-pagination-controls>
 				</div>
 		      </div>
 		     <div class="col-sm-8">
+<<<<<<< HEAD
 				<div id="map" class="hidden-xs"></div>
 			 </div>
+=======
+			<div id="map"></div>
+>>>>>>> origin/master
 		   </div>
 	     </div>
 		</div>
 		</div>
+<<<<<<< HEAD
 </div>
+=======
+
+
+>>>>>>> origin/master
 </body>
 </html>

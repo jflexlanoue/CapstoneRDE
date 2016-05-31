@@ -1,11 +1,15 @@
 <cfheader name="Content-Type" value="application/json">
 <cfsetting showDebugOutput="No">
 
-<CFIF NOT IsDefined("url.term")>
+<CFIF (NOT IsDefined("form.terms")) OR (NOT IsDefined("form.providers")) OR (NOT IsDefined("form.services"))>
 	<cfexit>
 </CFIF>
 
-	<cfset SearchTerm = url.term>
+
+	<cfset SearchTerm = form.terms>
+	<cfset SearchProviders = form.providers>
+	<cfset SearchServices = form.services>
+
 
 
 	<cfquery name = "SearchResult" dataSource = "capstoneDB">
@@ -16,7 +20,6 @@
 			AND loc.ID = servloc.Location_ID
 			AND serv.ID = servloc.Service_ID
 			<cfloop index = "SearchToken" list = #SearchTerm# delimiters = " ">
-
 				AND (	loc.address like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
 						OR
 						serv.name like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
@@ -24,6 +27,8 @@
 						prov.name like <cfqueryPARAM value = "%#SearchToken#%" CFSQLType = 'CF_SQL_VARCHAR'>
 					)
 			</cfloop>
+
+
 		ORDER BY prov.name
 	</cfquery>
 
