@@ -5,10 +5,12 @@ Functionality:
 	-Matches services & locations
 	-Results: all locations matched by keyword, all locations that serve services matched by keyword
 3. Click on the address, link to the map/ link to google map along with user's location and the destination address
-     - In desktop, the map is visible all the time
+     - In desktop, the map is visible all the time / mobile view - map is only visible in modal window
 4. Click on map should show you full listing / clicking on marker will show info window
 		- Click on location in search results should bring you to the pin on the map / clicking on the service brings to pin on the map
-5. Paging
+5. Bootstrap Modal with Angularjs
+6. Implement select2-jquery
+7. Server Side searching/filtering/pagination
 -->
 
 
@@ -22,8 +24,12 @@ Functionality:
   	 height:550px;
      width:100%;
   }
+ #map2 {
+  	 height:550px;
+     width:450px;
+  }
   .search-results { list-style-type:none !important; }
-.fullscreen .modal-dialog {
+  .fullscreen .modal-dialog {
         margin: 0;
   margin-right: auto;
   margin-left: auto;
@@ -62,7 +68,6 @@ Functionality:
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
 <script data-require="ui-bootstrap@*" data-semver="0.12.1" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"> </script>
 <script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
@@ -73,8 +78,6 @@ Functionality:
 
 <script src="js/dirPagination.js" type="text/javascript"></script>
 <script src="js/src.js"></script>
-
-
 <script type="text/javascript">
 
 	//Executes when the page First Loads
@@ -146,8 +149,6 @@ Functionality:
 		$("#btnSearch").on("click", function() {
 
 			var searchterms = $('.search-terms').val();
-
-
 			var searchProviders = [];
 
 			var searchProvidersData = $('.search-providers').select2('data');
@@ -159,7 +160,6 @@ Functionality:
 			}
 
 			var searchServices = [];
-
 			var searchServicesData = $('.search-services').select2('data');
 			if (searchServicesData.length > 0) {
 
@@ -167,23 +167,17 @@ Functionality:
 					searchServices.push(searchServicesData[i].id);
 				}
 			}
-
 			angular.element(document.getElementById('myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','));
-
 		});
 	});
+
 </script>
 </head>
-
 <body ng-app="myModule">
-
-
+<div class="container-fluid">
 	<div name="MainSearch" style="width:100%">
-
 		<div id="BasicSearch" style="width:500px;">
-
 			<h2>Basic Search</h2>
-
 				<input class="form-control search-terms" placeholder="Search" type="text" />
 				<button type="button" class="btn btn-default"  id="btnSearch" >
 	  				<span class="glyphicon glyphicon-search"></span>
@@ -197,18 +191,14 @@ Functionality:
 			<select class="search-services form-control selectpicker"  multiple="multiple"></select>
 		</div>
 	</div>
-
-
-
-
 	<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv">
 		<h1>Search Results</h1>
 		<div class="modal fade " id="service-info" tabindex='-1'>
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
 							{{$scope.activeResults.Name}}
-
 						<h2>{{activeResults.Name}}</h2>
 					</div>
 					<div class="modal-body">
@@ -216,17 +206,17 @@ Functionality:
 							<div class="col-sm-5">
 								<ul>
 									<li style="cursor:pointer;"><strong>Address:</strong>
-									 <a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">{{ activeResults.Address }}</a> </li>
+									<a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">{{ activeResults.Address }}</a> </li>
 									<li><strong>Hours: </strong><div ng-bind-html='activeResults.Hours'></div> </li>
 									<li><strong>Phone: </strong> {{ activeResults.Phone }} </li>
 									<li><strong>Website: </strong><a ng-href="{{activeResults.WebSite}}" target="_blank">{{ activeResults.WebSite }}</a></li>
 								</ul>
 							</div>
 							<div class="col-sm-7">
-								<div>
-									<h2 class="lead" align="center"><b> Services </b></h2>
-								</div>
-
+			                <div id="map2" class="img-responsive visible-xs"> </div>
+							<div>
+								<h2 class="lead" align="center"><b> Services </b></h2>
+							</div>
 								<ul class="list-group">
 									<li class="list-group-item"><div ng-bind-html ='activeResults.Service'></div></li>
 								</ul>
@@ -253,17 +243,17 @@ Functionality:
 				<dir-pagination-controls
 			       max-size="10"
 			       direction-links="true"
-			       boundary-links="true" >
+			       boundary-links="true">
     			</dir-pagination-controls>
 				</div>
 		      </div>
 		     <div class="col-sm-8">
-			<div id="map"></div>
+				<div id="map" class="hidden-xs"></div>
+			 </div>
 		   </div>
 	     </div>
 		</div>
 		</div>
-
-
+</div>
 </body>
 </html>

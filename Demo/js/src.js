@@ -1,8 +1,7 @@
- var app = angular.module("myModule", ['angularUtils.directives.dirPagination','ngSanitize','ui.bootstrap']);
+var app = angular.module("myModule", ['angularUtils.directives.dirPagination','ngSanitize','ui.bootstrap']);
  app.controller("myController", function ($scope, $http, $timeout, $compile) {
 		 
-		 
-		 
+	
 		 	//Structure for 1 Entry of the Search Results
              $scope.searchResult = {
              			Index: "",
@@ -25,7 +24,7 @@
              
              //Holds Entry for the Search Result currently Selected. (Full-Screen Modal View)
              $scope.activeResults = {};
-             
+            
              
        		 $scope.changeActiveMarker= function(idOfMarker){
 	       		 $scope.activeResults = $scope.searchResults[idOfMarker];
@@ -48,7 +47,6 @@
        			 console.log("Requesting Data For Search: Term=" + searchTerms + " Services=" + searchServices + " Providers=" + searchProviders);
 
 
-				
        			    //Uses $.param function from NodeJS to send POST data
                 	//http://stackoverflow.com/a/31475710
        			$http({
@@ -63,6 +61,7 @@
             			
 						$scope.clearResults();
             	
+            		$scope.map.setCenter(new google.maps.LatLng(38,-97));
             	
             		for (var i =0; i < data.ROWCOUNT; i++) {
             				var sr = {
@@ -77,10 +76,8 @@
                             		Service: data.DATA.SERVICES[i].replace(/\|/g,'<br />'),
                     			};
                     			
-                    			sr.Marker = $scope.createGeoMarker(sr);
-                    			$scope.searchResults.push(sr);	  
-                    			
-                    			  			
+                    			sr.Marker = $scope.createGeoMarker(sr, true);
+                    			$scope.searchResults.push(sr);	  	  			
             		}         
             		
             		   		
@@ -94,12 +91,59 @@
                 var mapOptions = {
                         zoom: 4,
                         center: new google.maps.LatLng(38,-95),
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        panControl: true,
+                        zoomControl: true,
+                        mapTypeControl: true,
+                        scaleControl: true,
+                        streetViewControl: true,
+                        overviewMapControl: true,
+                        rotateControl: true,
+                        scrollwheel: false
                     }
-                $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);  
+                
+                var mapOptions2 = {
+                        zoom: 12,
+                        center: new google.maps.LatLng(38,-95),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        scrollwheel: false,
+                        draggable: false,
+                        panControl: true,
+                        zoomControl: true,
+                        mapTypeControl: true,
+                        scaleControl: true,
+                        streetViewControl: true,
+                        overviewMapControl: true,
+                        rotateControl: true,
+                        
+                    }
+                $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                $scope.map2 = new google.maps.Map(document.getElementById('map2'), mapOptions2);
                 
                 
-                $scope.createGeoMarker = function(sr) {
+                jQuery('#service-info')
+                .on('shown.bs.modal',
+                     function(){
+                	   console.log($scope.activeResults.Name);
+                       google.maps.event.trigger($scope.map2,'resize',{});
+                       $scope.map2.setCenter(new google.maps.LatLng($scope.activeResults.Lat,$scope.activeResults.Long));
+                       var sr = {
+       						Index : 0,
+               				Name : $scope.activeResults.Name,
+                       		WebSite : $scope.activeResults.WebSite,
+                       		Hours : $scope.activeResults.Hours,
+                       		Phone : $scope.activeResults.Phone,
+                       		Address : $scope.activeResults.Address,
+                       		Lat : $scope.activeResults.Lat,
+                       		Long : $scope.activeResults.Long,
+                       		Service: "",
+               			};
+               			$scope.createGeoMarker(sr, false);
+                    });
+
+                
+                
+                $scope.createGeoMarker = function(sr, onPageLoad) {
                 		
                 		//ng-click for a button inside a google map marker
                 		//https://forum.ionicframework.com/t/ng-click-in-google-maps-infowindow/5537/3
@@ -115,19 +159,21 @@
                 	  var compiled =  $compile(infoWindowContentHtml)($scope);
                 	  
                 	  var marker = new google.maps.Marker({
-                        map: $scope.map,
+                        map: onPageLoad ? $scope.map : $scope.map2,
                         position: new google.maps.LatLng(sr.Lat, sr.Long),
                         title: sr.Name,
                         animation: google.maps.Animation.DROP,
                         fit:true,
                         content: compiled[0]
                       });
-
-	                  google.maps.event.addListener(marker, 'click', function(){
-					      
-					      infoWindow.setContent(this.content)
-	                	  infoWindow.open($scope.map, marker);	                	  
-	                  });
+					
+					 if(onPageLoad){
+		                  google.maps.event.addListener(marker, 'click', function(){
+						      
+						      infoWindow.setContent(this.content)
+		                	  infoWindow.open($scope.map, marker);	                	  
+		                  });
+	                  }
 	                  return marker;
                 };
                 
@@ -151,9 +197,4 @@
 	
 	$scope.getFilteredData("", "", "");                
 });
- 
- 
- 
- 
- 
  
