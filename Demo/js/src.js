@@ -1,12 +1,8 @@
-var app = angular.module("myModule", ['angularUtils.directives.dirPagination','ngSanitize','ui.bootstrap']);
+ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','ngSanitize','ui.bootstrap']);
  app.controller("myController", function ($scope, $http, $timeout, $compile) {
 		 
-<<<<<<< HEAD
-	
-=======
 		 
 		 
->>>>>>> origin/master
 		 	//Structure for 1 Entry of the Search Results
              $scope.searchResult = {
              			Index: "",
@@ -29,11 +25,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
              
              //Holds Entry for the Search Result currently Selected. (Full-Screen Modal View)
              $scope.activeResults = {};
-<<<<<<< HEAD
-            
-=======
              
->>>>>>> origin/master
              
        		 $scope.changeActiveMarker= function(idOfMarker){
 	       		 $scope.activeResults = $scope.searchResults[idOfMarker];
@@ -56,10 +48,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
        			 console.log("Requesting Data For Search: Term=" + searchTerms + " Services=" + searchServices + " Providers=" + searchProviders);
 
 
-<<<<<<< HEAD
-=======
 				
->>>>>>> origin/master
        			    //Uses $.param function from NodeJS to send POST data
                 	//http://stackoverflow.com/a/31475710
        			$http({
@@ -88,11 +77,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                             		Service: data.DATA.SERVICES[i].replace(/\|/g,'<br />'),
                     			};
                     			
-<<<<<<< HEAD
-                    			sr.Marker = $scope.createGeoMarker(sr, true);
-=======
                     			sr.Marker = $scope.createGeoMarker(sr);
->>>>>>> origin/master
                     			$scope.searchResults.push(sr);	  
                     			
                     			  			
@@ -109,66 +94,12 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                 var mapOptions = {
                         zoom: 4,
                         center: new google.maps.LatLng(38,-95),
-<<<<<<< HEAD
-                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        panControl: true,
-                        zoomControl: true,
-                        mapTypeControl: true,
-                        scaleControl: true,
-                        streetViewControl: true,
-                        overviewMapControl: true,
-                        rotateControl: true,
-                        
-                    }
-                
-                var mapOptions2 = {
-                        zoom: 12,
-                        center: new google.maps.LatLng(38,-95),
-                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        scrollwheel: false,
-                        draggable: false,
-                        panControl: true,
-                        zoomControl: true,
-                        mapTypeControl: true,
-                        scaleControl: true,
-                        streetViewControl: true,
-                        overviewMapControl: true,
-                        rotateControl: true,
-                        
-                    }
-                $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-                $scope.map2 = new google.maps.Map(document.getElementById('map2'), mapOptions2);
-                jQuery('#service-info')
-                .on('shown.bs.modal',
-                     function(){
-                	   console.log($scope.activeResults.Name);
-                       google.maps.event.trigger($scope.map2,'resize',{});
-                       $scope.map2.setCenter(new google.maps.LatLng($scope.activeResults.Lat,$scope.activeResults.Long));
-                       var sr = {
-       						Index : 0,
-               				Name : $scope.activeResults.Name,
-                       		WebSite : $scope.activeResults.WebSite,
-                       		Hours : $scope.activeResults.Hours,
-                       		Phone : $scope.activeResults.Phone,
-                       		Address : $scope.activeResults.Address,
-                       		Lat : $scope.activeResults.Lat,
-                       		Long : $scope.activeResults.Long,
-                       		Service: "",
-               			};
-               			$scope.createGeoMarker(sr, false);
-                    });
-
-                
-                
-                $scope.createGeoMarker = function(sr, onPageLoad) {
-=======
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     }
                 $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);  
                 
                 
                 $scope.createGeoMarker = function(sr) {
->>>>>>> origin/master
                 		
                 		//ng-click for a button inside a google map marker
                 		//https://forum.ionicframework.com/t/ng-click-in-google-maps-infowindow/5537/3
@@ -184,11 +115,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                 	  var compiled =  $compile(infoWindowContentHtml)($scope);
                 	  
                 	  var marker = new google.maps.Marker({
-<<<<<<< HEAD
-                        map: onPageLoad ? $scope.map : $scope.map2,
-=======
                         map: $scope.map,
->>>>>>> origin/master
                         position: new google.maps.LatLng(sr.Lat, sr.Long),
                         title: sr.Name,
                         animation: google.maps.Animation.DROP,
@@ -222,10 +149,6 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
     var infoWindow = new google.maps.InfoWindow();  
                 
 	
-<<<<<<< HEAD
-	$scope.getFilteredData("hiv", "", "");                
-});
-=======
 	$scope.getFilteredData("", "", "");                
 });
  
@@ -233,5 +156,4 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
  
  
  
->>>>>>> origin/master
  
