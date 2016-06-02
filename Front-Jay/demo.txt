@@ -1,0 +1,12 @@
+Functionality:
+1. link to Google Maps for directions for each location
+2. Basic Search: type any keyword
+	-Matches services & locations
+	-Results: all locations matched by keyword, all locations that serve services matched by keyword
+3. Click on the address, link to the map/ link to google map along with user's location and the destination address
+     - In desktop, the map is visible all the time / mobile view - map is only visible in modal window
+4. Click on map should show you full listing / clicking on marker will show info window
+		- Click on location in search results should bring you to the pin on the map / clicking on the service brings to pin on the map
+5. Bootstrap Modal with Angularjs
+6. Implement select2-jquery
+7. Server Side searching/filtering/pagination
