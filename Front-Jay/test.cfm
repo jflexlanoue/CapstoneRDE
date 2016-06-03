@@ -162,20 +162,20 @@ Functionality:
 <div class="container-fluid">
 <div class="row">
 <div class="col-sm-4">
-	<div name="MainSearch">
-		<div id="BasicSearch" style="width:auto;">
+	<div name="MainSearch" style="width:75%;">
+		<div id="BasicSearch">
 			<h2>Basic Search</h2>
 				<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />
 				<button type="button" class="btn btn-default"  id="btnSearch" >
 	  				<span class="glyphicon glyphicon-search"></span>
 				</button>
 		</div>
-		<div name="AdvancedSearch" style="width:auto;">
+		<div name="AdvancedSearch">
 			<h2>Advanced Search</h2>
 			<h3>Providers</h3>
-			<select class="search-providers form-control selectpicker"  multiple="multiple"></select>
+			<select class="search-providers form-control selectpicker js-example-responsive" style="width: 75%" multiple="multiple"></select>
 			<h3>Services</h3>
-			<select class="search-services form-control selectpicker"  multiple="multiple"></select>
+			<select class="search-services form-control selectpicker js-example-responsive" style="width: 75%" multiple="multiple"></select>
 		</div>
 	</div>
 </div>
