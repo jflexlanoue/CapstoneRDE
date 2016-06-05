@@ -17,52 +17,34 @@ Functionality:
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta name="viewport" content="width=device-width,minimum-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
 <style type="text/css">
+	body {
+    max-width: auto;
+    overflow-x: hidden;
+	position: relative;
+}
   #map {
   	 height:550px;
      width:100%;
   }
  #map2 {
-  	 height:550px;
+  	 height:300px;
      width:450px;
   }
   .search-results { list-style-type:none !important; }
-  .fullscreen .modal-dialog {
-        margin: 0;
-  margin-right: auto;
-  margin-left: auto;
-        width: 100%;
-        height: 100%;
-        min-height: 100%;
-        padding: 0;
-        color: #333;
-    }
-    .fullscreen .modal-content {
-        height: 100%;
-        min-height: 100%;
-        border-radius: 0;
-        color: #333;
-        background: rgba(255, 255, 255, 0.97);
-        overflow:auto;
-    }
-    .fullscreen .modal-body ul {
-        padding: 20px 0 0 0;
-    }
-	.fullscreen .modal-header h2 {
-		font-size: 45px;
-	}
-    .fullscreen .modal-body li {
-        padding: 3px 0 3px 0 ;
-		color:#333;
-		font-size: 16px;
 
-    }
-    .fullscreen .modal-body a {
-        color: #333;
-        font-size: 16px;
-    }
+::-webkit-scrollbar
+{
+    width:0px;
+}
+::-webkit-scrollbar-track-piece
+{
+    background-coor:transparent;
+}
+
 </style>
 <title></title>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
@@ -74,9 +56,8 @@ Functionality:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
 <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
-
-
-<script src="js/dirPagination.js" type="text/javascript"></script>
+<script type="text/javascript" src="lib/angular-media-queries/match-media.js" ></script>
+<script src="lib/dirPagination.js" type="text/javascript"></script>
 <script src="js/src.js"></script>
 <script type="text/javascript">
 
@@ -89,9 +70,11 @@ Functionality:
 		$.when(getSearchProviders()).done(function() {
 			$(".search-providers").select2({
 			  data: providerData,
-			  tags: true,
+			  tags: false,
 			  placeholder: 'Providers',
-			  closeOnSelect: false
+			  closeOnSelect: false,
+			  allowClear: true,
+			  multiple: true
 			});
 		});
 
@@ -120,9 +103,11 @@ Functionality:
 		$.when(getSearchServices()).done(function() {
 			$(".search-services").select2({
 			  data: serviceData,
-			  tags: true,
+			  tags: false,
 			  placeholder: 'Services',
-			  closeOnSelect: false
+			  closeOnSelect: false,
+			  allowClear: true,
+			  multiple: true
 			});
 		});
 
@@ -175,25 +160,29 @@ Functionality:
 </head>
 <body ng-app="myModule">
 <div class="container-fluid">
-	<div name="MainSearch" style="width:100%">
-		<div id="BasicSearch" style="width:500px;">
+<div class="row">
+<div class="col-sm-4">
+	<div name="MainSearch" style="width:75%;">
+		<div id="BasicSearch">
 			<h2>Basic Search</h2>
-				<input class="form-control search-terms" placeholder="Search" type="text" />
+				<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />
 				<button type="button" class="btn btn-default"  id="btnSearch" >
 	  				<span class="glyphicon glyphicon-search"></span>
 				</button>
 		</div>
-		<div name="AdvancedSearch" style="width:500px">
+		<div name="AdvancedSearch">
 			<h2>Advanced Search</h2>
 			<h3>Providers</h3>
-			<select class="search-providers form-control selectpicker"  multiple="multiple"></select>
+			<select class="search-providers form-control selectpicker js-example-responsive" style="width: 75%" multiple="multiple"></select>
 			<h3>Services</h3>
-			<select class="search-services form-control selectpicker"  multiple="multiple"></select>
+			<select class="search-services form-control selectpicker js-example-responsive" style="width: 75%" multiple="multiple"></select>
 		</div>
 	</div>
+</div>
+</div>
 	<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv">
-		<h1>Search Results</h1>
-		<div class="modal fade " id="service-info" tabindex='-1'>
+		<h2>Search Results</h2>
+		<div class="modal fade" id="service-info" tabindex='-1'>
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -213,9 +202,12 @@ Functionality:
 								</ul>
 							</div>
 							<div class="col-sm-7">
-			                <div id="map2" class="img-responsive visible-xs"> </div>
+
+			                <div id="map2" class="img-responsive" ng-show="mobile"> </div>
+
 							<div>
 								<h2 class="lead" align="center"><b> Services </b></h2>
+
 							</div>
 								<ul class="list-group">
 									<li class="list-group-item"><div ng-bind-html ='activeResults.Service'></div></li>
@@ -230,7 +222,8 @@ Functionality:
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4" style="height:550px; overflow-y:scroll;">
+			<div class="col-sm-5" style="height:550px; width:400px; overflow:hidden;">
+			<div style="height:550px; width:auto; overflow:auto; padding-right: 34px; margin:auto;">
 			 	<ul dir-paginate ="sr in searchResults | itemsPerPage: 4" class="search-results">
 				   <li ng-click="showOnMap(sr, false)" style="cursor:pointer;"><h2>{{ sr.Name}}</h2></li>
 	               <li style="cursor:pointer;"><a ng-href="https://www.google.com/maps?q={{sr.Address}}" target="_blank">{{ sr.Address }}</a> </li>
@@ -241,14 +234,16 @@ Functionality:
 				</ul>
 				<div align="middle">
 				<dir-pagination-controls
-			       max-size="10"
+			       max-size="4"
 			       direction-links="true"
+			       auto-hide ="true"
 			       boundary-links="true">
     			</dir-pagination-controls>
 				</div>
+				</div>
 		      </div>
-		     <div class="col-sm-8">
-				<div id="map" class="hidden-xs"></div>
+		     <div class="col-sm-7">
+				<div id="map" ng-show="desktop" ></div>
 			 </div>
 		   </div>
 	     </div>

@@ -1,5 +1,12 @@
-var app = angular.module("myModule", ['angularUtils.directives.dirPagination','ngSanitize','ui.bootstrap']);
- app.controller("myController", function ($scope, $http, $timeout, $compile) {
+var app = angular.module("myModule", ['angularUtils.directives.dirPagination','ngSanitize','ui.bootstrap','matchMedia']);
+ app.controller("myController", function ($scope, $http, $timeout, $compile,screenSize) {
+	 
+	 $scope.desktop = screenSize.on('md, lg', function(match){
+		    $scope.desktop = match;
+		});
+		$scope.mobile = screenSize.on('xs, sm', function(match){
+		    $scope.mobile = match;
+		});
 		 
 	
 		 	//Structure for 1 Entry of the Search Results
@@ -61,7 +68,6 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
             			
 						$scope.clearResults();
             	
-            		$scope.map.setCenter(new google.maps.LatLng(38,-97));
             	
             		for (var i =0; i < data.ROWCOUNT; i++) {
             				var sr = {
@@ -77,21 +83,19 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                     			};
                     			
                     			sr.Marker = $scope.createGeoMarker(sr, true);
-                    			$scope.searchResults.push(sr);	  	  			
-            		}         
-            		
-            		   		
+                    			$scope.searchResults.push(sr);	  
+                    }         
             	})
             	.error(function(data,status,header,config){
             		alert("ERROR");
             	});
        		 };
        		 
-               
-                var mapOptions = {
+       		   var mapOptions = {
                         zoom: 4,
                         center: new google.maps.LatLng(38,-95),
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        scrollwheel: false,
                         panControl: true,
                         zoomControl: true,
                         mapTypeControl: true,
@@ -99,7 +103,6 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                         streetViewControl: true,
                         overviewMapControl: true,
                         rotateControl: true,
-                        scrollwheel: false
                     }
                 
                 var mapOptions2 = {
@@ -115,18 +118,25 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                         streetViewControl: true,
                         overviewMapControl: true,
                         rotateControl: true,
-                        
                     }
+       		   
                 $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                google.maps.event.addDomListener(window, "resize", function() {
+                    google.maps.event.trigger($scope.map, 'resize',{});
+                    $scope.map.setCenter(new google.maps.LatLng(38,-95)); 
+                });
+                
                 $scope.map2 = new google.maps.Map(document.getElementById('map2'), mapOptions2);
-                
-                
                 jQuery('#service-info')
                 .on('shown.bs.modal',
                      function(){
                 	   console.log($scope.activeResults.Name);
                        google.maps.event.trigger($scope.map2,'resize',{});
                        $scope.map2.setCenter(new google.maps.LatLng($scope.activeResults.Lat,$scope.activeResults.Long));
+                       google.maps.event.addDomListener(window, "resize", function() {
+                    	   google.maps.event.trigger($scope.map2,'resize',{});
+                           $scope.map2.setCenter(new google.maps.LatLng($scope.activeResults.Lat,$scope.activeResults.Long));
+                       });
                        var sr = {
        						Index : 0,
                				Name : $scope.activeResults.Name,
@@ -141,23 +151,19 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                			$scope.createGeoMarker(sr, false);
                     });
 
-                
-                
                 $scope.createGeoMarker = function(sr, onPageLoad) {
                 		
                 		//ng-click for a button inside a google map marker
                 		//https://forum.ionicframework.com/t/ng-click-in-google-maps-infowindow/5537/3
                 
-                		var infoWindowContentHtml = '<div class="info-window"><h2>' + sr.Name + '</h2><br/>' +
- 						 	'<b>Address: </b>'+'<a href="https://www.google.com/maps?q=' + sr.Address + '" target="_blank">' + sr.Address + '</a>'+
- 						 	'<br/><b>Hour: </b>'+ sr.Hours +'<br/>'+ 
- 						 	'<b>Phone: </b>' + sr.Phone + '<br/>'+
- 						 	'<b>Website: </b>'+'<a href="' + sr.WebSite + '" target="_blank">' + sr.WebSite + '</a>'+
- 						 	'<br/><button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(' + sr.Index + ')" data-keyboard="true">More</button></div>';
-	                	  
-                
+            		var infoWindowContentHtml = '<div class="info-window"><h2>' + sr.Name + '</h2><br/>' +
+					 	'<b>Address: </b>'+'<a href="https://www.google.com/maps?q=' + sr.Address + '" target="_blank">' + sr.Address + '</a>'+
+					 	'<br/><b>Hour: </b>'+ sr.Hours +'<br/>'+ 
+					 	'<b>Phone: </b>' + sr.Phone + '<br/>'+
+					 	'<b>Website: </b>'+'<a href="' + sr.WebSite + '" target="_blank">' + sr.WebSite + '</a>'+
+					 	'<br/><button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(' + sr.Index + ')" data-keyboard="true">More</button></div>';
+            
                 	  var compiled =  $compile(infoWindowContentHtml)($scope);
-                	  
                 	  var marker = new google.maps.Marker({
                         map: onPageLoad ? $scope.map : $scope.map2,
                         position: new google.maps.LatLng(sr.Lat, sr.Long),
@@ -166,19 +172,15 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                         fit:true,
                         content: compiled[0]
                       });
-					
-					 if(onPageLoad){
-		                  google.maps.event.addListener(marker, 'click', function(){
-						      
-						      infoWindow.setContent(this.content)
-		                	  infoWindow.open($scope.map, marker);	                	  
-		                  });
-	                  }
+
+	                  google.maps.event.addListener(marker, 'click', function(){
+					      
+					      infoWindow.setContent(this.content)
+	                	  infoWindow.open($scope.map, marker);	                	  
+	                  });
 	                  return marker;
                 };
-                
-               
-                
+
                 //info window-content
                 $scope.showOnMap = function(sr, hideInfoWindow) {
 
@@ -189,12 +191,9 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                 		// to hide marker InfoWindow 		
                 	} 	
                 };
-                          
                 
     //on select view info window
     var infoWindow = new google.maps.InfoWindow();  
-                
-	
-	$scope.getFilteredData("", "", "");                
+    $scope.getFilteredData("hiv", "", "");                
 });
  
