@@ -133,6 +133,9 @@ Functionality:
 
 		$("#btnSearch").on("click", function() {
 
+			$("#advancedSearch").collapse("hide");
+
+
 			var searchterms = $('.search-terms').val();
 			var searchProviders = [];
 
@@ -158,42 +161,76 @@ Functionality:
 
 </script>
 </head>
-<body ng-app="myModule">
+<body ng-app="myModule" style="background-color:#DDDDDD">
 <div class="container-fluid">
-<div class="row">
-<div class="col-sm-4">
-	<div name="MainSearch" style="width:75%;">
-		<div id="BasicSearch">
-			<h2>Basic Search</h2>
-				<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />
-				<button type="button" class="btn btn-default"  id="btnSearch" >
-	  				<span class="glyphicon glyphicon-search"></span>
-				</button>
-		</div>
-		<div name="AdvancedSearch">
-			<h2>Advanced Search</h2>
-			<h3>Providers</h3>
-			<select class="search-providers form-control selectpicker js-example-responsive" style="width: 75%" multiple="multiple"></select>
-			<h3>Services</h3>
-			<select class="search-services form-control selectpicker js-example-responsive" style="width: 75%" multiple="multiple"></select>
+
+	<div class="row" style="background-color:#EEEEEE">
+		<h1>Hiv Research AID</h1>
+			<div class="col-sm-5 col-sm-offset-3" >
+					<form>
+						<div id="BasicSearch" class="input-group" >
+
+								<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />
+								<div class="input-group-btn">
+
+									<button type="submit" class="btn btn-default"  id="btnSearch" >
+						  				<span class="glyphicon glyphicon-search"></span> Search
+									</button>
+
+									<button type="button" class="btn btn-default " data-toggle="collapse" data-target="#advancedSearch">
+										<span class="caret"></span>
+									</button>
+								</div>
+
+						</div>
+					</form>
+			</div>
+	</div>
+
+<div class="row collapse" id="advancedSearch" style="background-color:#EEEEEE">
+	<div class="col-sm-5 col-sm-offset-3" style="">
+
+
+		<div class="panel panel-default" style="">
+
+			<div class="panel-heading">
+		      <h4 class="panel-title">
+		        Advanced Filters
+		      </h4>
+	    	</div>
+			<div class="panel-body">
+
+				<form>
+					<div class="form-group" >
+						<label for="ProviderSearch">Providers:</label>
+						<select class="search-providers form-control selectpicker js-example-responsive" style="width:90%"  multiple="multiple" id="ProviderSearch"></select>
+					</div>
+					<div class="form-group" >
+						<label for="ServiceSearch">Services:</label>
+						<select class="search-services form-control selectpicker js-example-responsive" style="width:90%" multiple="multiple" id="ServiceSearch"></select>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
+
 </div>
-</div>
-	<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv">
-		<h2>Search Results</h2>
-		<div class="modal fade" id="service-info" tabindex='-1'>
+
+	<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv" >
+
+<!---  Full Screen Modal View  --->
+		<div class="modal fade" id="service-info" tabindex='-1' >
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
+				<div class="modal-content" >
+					<div class="modal-header" >
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 							{{$scope.activeResults.Name}}
 						<h2>{{activeResults.Name}}</h2>
 					</div>
 					<div class="modal-body">
-						<div class="row">
-							<div class="col-sm-5">
-								<ul>
+						<div class="row" >
+							<div class="col-sm-5" >
+								<ul >
 									<li style="cursor:pointer;"><strong>Address:</strong>
 									<a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">{{ activeResults.Address }}</a> </li>
 									<li><strong>Hours: </strong><div ng-bind-html='activeResults.Hours'></div> </li>
@@ -221,34 +258,76 @@ Functionality:
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-5" style="height:550px; width:400px; overflow:hidden;">
-			<div style="height:550px; width:auto; overflow:auto; padding-right: 34px; margin:auto;">
-			 	<ul dir-paginate ="sr in searchResults | itemsPerPage: 4" class="search-results">
-				   <li ng-click="showOnMap(sr, false)" style="cursor:pointer;"><h2>{{ sr.Name}}</h2></li>
-	               <li style="cursor:pointer;"><a ng-href="https://www.google.com/maps?q={{sr.Address}}" target="_blank">{{ sr.Address }}</a> </li>
-				   <li><div ng-bind-html='sr.Hours'></div> </li>
-	               <li> {{ sr.Phone }} </li>
-	               <li><a ng-href="{{sr.WebSite}}" target="_blank">{{ sr.WebSite }}</a></li>
-	               <li><button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(sr.Index)" data-keyboard="true">More</button> </li>
-				</ul>
-				<div align="middle">
+
+<!--- Main Page Results Display --->
+<hr>
+
+	<div class="row">
+		<div class="col-sm-5">
+			<div align="middle" style="width:100%">
 				<dir-pagination-controls
-			       max-size="4"
-			       direction-links="true"
-			       auto-hide ="true"
-			       boundary-links="true">
-    			</dir-pagination-controls>
-				</div>
-				</div>
-		      </div>
-		     <div class="col-sm-7">
-				<div id="map" ng-show="desktop" ></div>
-			 </div>
-		   </div>
-	     </div>
+						       max-size="4"
+						       direction-links="true"
+						       auto-hide ="true"
+						       boundary-links="true">
+			   </dir-pagination-controls>
+			</div>
 		</div>
+
+	</div>
+
+
+		<div class="row">
+
+			<div class="col-sm-5" style="">
+				<div style=" width:auto; overflow:auto; padding-right: 10px; margin:auto;">
+
+						<div class="panel panel-default search-results" dir-paginate ="sr in searchResults | itemsPerPage: 4">
+		  						<div class="panel-heading" ng-click="showOnMap(sr, false)" style="cursor:pointer;">
+									<h4>{{ sr.Name}}</h4>
+								</div>
+
+		  						<div class="panel-body">
+									<div style="cursor:pointer;">
+										<a ng-href="https://www.google.com/maps?q={{sr.Address}}" target="_blank">
+											<span class="glyphicon glyphicon-map-marker"></span>
+											{{ sr.Address }}
+										</a>
+									</div>
+
+										<div>
+											<div style="float:left;"><span class="glyphicon glyphicon-calendar"></span></div>
+											<div ng-bind-html='sr.Hours'></div>
+										</div>
+
+									<div><span class="glyphicon glyphicon-earphone"></span> {{ sr.Phone }}</div>
+
+									<div>
+										<span class="glyphicon glyphicon-home"></span>
+										<a ng-href="{{sr.WebSite}}" target="_blank">{{ sr.WebSite }}</a>
+									</div>
+
+
+									<button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(sr.Index)" data-keyboard="true">More</button>
+								</div>
+						</div>
+						<div align="middle">
+							<dir-pagination-controls
+						       max-size="4"
+						       direction-links="true"
+						       auto-hide ="true"
+						       boundary-links="true">
+			    			</dir-pagination-controls>
+						</div>
+					</div>
+			      </div>
+			     <div class="col-sm-7 vertical-center">
+					<div id="map" ng-show="desktop" ></div>
+				 </div>
+			   </div>
+		     </div>
 		</div>
+	</div>
 </div>
 </body>
 </html>
