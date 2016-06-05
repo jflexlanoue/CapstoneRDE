@@ -1,16 +1,15 @@
+
 <cfheader name="Content-Type" value="application/json">
 <cfsetting showDebugOutput="No">
+
 
 <CFIF (NOT IsDefined("form.terms")) OR (NOT IsDefined("form.providers")) OR (NOT IsDefined("form.services"))>
 	<cfexit>
 </CFIF>
 
-
 	<cfset SearchTerm = form.terms>
 	<cfset SearchProviders = form.providers>
 	<cfset SearchServices = form.services>
-
-
 
 	<cfquery name = "SearchResult" dataSource = "capstoneDB">
 	    SELECT DISTINCT prov.name, prov.website,
@@ -28,7 +27,15 @@
 					)
 			</cfloop>
 
+			<cfif len((trim(SearchProviders)))>
 
+				AND prov.ID IN ( <cfqueryPARAM value = '#SearchProviders#' CFSQLType = 'CF_SQL_BIGINT' LIST='true' >)
+			</cfif>
+
+			<cfif len((trim(SearchServices)))>
+
+				AND serv.ID IN ( <cfqueryPARAM value = '#SearchServices#' CFSQLType = 'CF_SQL_BIGINT' LIST='true' >)
+			</cfif>
 		ORDER BY prov.name
 	</cfquery>
 
