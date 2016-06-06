@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta name="viewport" content="width=device-width,minimum-scale=1">
+		<meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1, user-scalable=no">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
 		<style type="text/css">
@@ -140,13 +140,19 @@
 	<body ng-app="myModule" style="min-width:335px; background-color:#DDDDDD">
 		<div class="container-fluid">
 			<div style="background-image: url('img/nycskyline.jpg'); padding-bottom:50px; margin:0px">
-				<div class="row" >
-					<div class="col-sm-5 col-sm-offset-3" >
-						<h1 style="color:white" align="center">
+
+				<div class="row">
+					<div class=" col-xs-offset-1" >
+						<h1 style="color:white" >
 							Hiv Ressource Guide
 						</h1>
 					</div>
-					<div class="col-sm-5 col-sm-offset-3" >
+
+				</div>
+
+				<!--- Main Search Bar --->
+				<div class="row" >
+					<div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-3" >
 						<form>
 							<div id="BasicSearch" class="input-group" >
 								<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />
@@ -165,8 +171,9 @@
 						</form>
 					</div>
 				</div>
+				<!--- Advanced Tab Drop Down --->
 				<div class="row collapse" id="advancedSearch" >
-					<div class="col-sm-5 col-sm-offset-3" style="">
+					<div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-3" style="">
 						<div class="panel panel-default" style="">
 							<div class="panel-heading">
 								<h4 class="panel-title">
@@ -195,6 +202,8 @@
 					</div>
 				</div>
 			</div>
+
+
 			<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv" >
 				<!---  Full Screen Modal View  --->
 				<div class="modal fade" id="service-info" tabindex='-1' >
@@ -267,27 +276,31 @@
 						</div>
 					</div>
 				</div>
+
 				<!--- Main Page Results Display --->
 				<hr>
 				<div class="row">
-					<div class="col-sm-6">
-						<div align="middle" style="width:100%">
+					<div class="col-sm-5 col-md-4" >
+						<div align="middle" >
 							<dir-pagination-controls
 								max-size="4"
 								direction-links="true"
 								auto-hide ="true"
-								boundary-links="true">
+								boundary-links="false">
 							</dir-pagination-controls>
 						</div>
 					</div>
+
+
 					<div class="col-sm-6 vertical-center">
 						<h3 align="middle" ng-show="desktop">
 							Map of Results
 						</h3>
 					</div>
+
 				</div>
 				<div class="row">
-					<div class="col-sm-6" style="">
+					<div class="center-block col-sm-5 col-md-4" style="max-width:500px">
 						<div style=" width:auto; overflow:auto;  margin:auto;">
 							<div class="panel panel-default search-results" dir-paginate ="sr in searchResults | itemsPerPage: 4">
 								<div class="panel-heading" ng-click="showOnMap(sr, false)" style="cursor:pointer;">
@@ -331,19 +344,19 @@
 
 						</div>
 					</div>
-					<div class="col-sm-6 vertical-center">
-						<div id="map" ng-show="desktop" >
+					<div class="col-sm-7 col-md-8">
+						<div id="map" ng-show="desktop"  >
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-6">
-						<div align="middle" style="width:100%">
+					<div class="col-sm-5 col-md-4">
+						<div align="middle">
 							<dir-pagination-controls
 								max-size="4"
 								direction-links="true"
 								auto-hide ="true"
-								boundary-links="true">
+								boundary-links="false">
 							</dir-pagination-controls>
 						</div>
 					</div>
