@@ -11,6 +11,7 @@
 	<cfset SearchProviders = form.providers>
 	<cfset SearchServices = form.services>
 
+
 	<cfquery name = "SearchResult" dataSource = "capstoneDB">
 	    SELECT DISTINCT prov.name, prov.website,
 						loc.*
@@ -41,6 +42,8 @@
 
 
 	<cfset Services = ArrayNew(1)>
+	<cfset ServicesMatch = ArrayNew(1)>
+
 
 	<cfoutput query = "SearchResult">
 
@@ -54,18 +57,34 @@
 
 			<cfset LocationServices = ArrayNew(1)>
 
+			<cfset Match = 0>
+
 			<cfloop query = "LocServices">
 
+
+					<cfif (Find(LCase(SearchTerm), LCase(#name#)) gt 0)>
+						<cfset Match = Match+1>
+					</cfif>
+
+
 				<cfset ArrayAppend(LocationServices, #name#)>
+
 			</cfloop>
+
+
+
 
 			<cfset listformat = ArrayToList(LocationServices, "|")>
 
 			<cfset ArrayAppend(Services, listformat)>
+
+			<cfset ArrayAppend(ServicesMatch, Match)>
+
 	</cfoutput>
 
 	<cfset QueryAddColumn(SearchResult, "services", "VarChar", Services)>
 
+	<cfset QueryAddColumn(SearchResult, "servicesMatch", "BIGINT", ServicesMatch)>
 
 	<cfoutput>
 		#SerializeJSON(SearchResult,true)#

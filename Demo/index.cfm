@@ -137,19 +137,16 @@
 
 </script>
 	</head>
-	<body ng-app="myModule" style="min-width:335px; background-color:#DDDDDD">
+	<body ng-app="myModule" style="min-width:335px; background-color:#DDDDDD" id="top">
 		<div class="container-fluid">
 			<div style="background-image: url('img/nycskyline.jpg'); padding-bottom:50px; margin:0px">
-
 				<div class="row">
 					<div class=" col-xs-offset-1" >
 						<h1 style="color:white" >
 							Hiv Ressource Guide
 						</h1>
 					</div>
-
 				</div>
-
 				<!--- Main Search Bar --->
 				<div class="row" >
 					<div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-3" >
@@ -202,8 +199,6 @@
 					</div>
 				</div>
 			</div>
-
-
 			<div ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv" >
 				<!---  Full Screen Modal View  --->
 				<div class="modal fade" id="service-info" tabindex='-1' >
@@ -221,6 +216,8 @@
 							<div class="modal-body">
 								<div class="row" >
 									<div class="col-sm-5" >
+
+
 										<div style="cursor:pointer;">
 											<a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">
 												<span class="glyphicon glyphicon-map-marker">
@@ -276,47 +273,52 @@
 						</div>
 					</div>
 				</div>
-
 				<!--- Main Page Results Display --->
 				<hr>
-				<div class="row">
+				<!---
+					<div class="row">
 					<div class="col-sm-5 col-md-4" >
-						<div align="middle" >
-							<dir-pagination-controls
-								max-size="4"
-								direction-links="true"
-								auto-hide ="true"
-								boundary-links="false">
-							</dir-pagination-controls>
-						</div>
+					<div align="middle" >
+					<dir-pagination-controls
+					max-size="4"
+					direction-links="true"
+					auto-hide ="true"
+					boundary-links="false">
+					</dir-pagination-controls>
 					</div>
-
-
+					</div>
 					<div class="col-sm-6 vertical-center">
-						<h3 align="middle" ng-show="desktop">
-							Map of Results
-						</h3>
+					<h3 align="middle" ng-show="desktop">
+					Map of Results
+					</h3>
 					</div>
-
-				</div>
+					</div>
+					--->
 				<div class="row">
 					<div class="center-block col-sm-5 col-md-4" style="max-width:500px">
 						<div style=" width:auto; overflow:auto;  margin:auto;">
+
+							<div ng-show="mobile" id="ResultsFound">
+								Results <span class="badge" id="resultcountXS">0</span>
+							</div>
 							<div class="panel panel-default search-results" dir-paginate ="sr in searchResults | itemsPerPage: 4">
-								<div class="panel-heading" ng-click="showOnMap(sr, false)" style="cursor:pointer;">
-									<h4>
-										{{ sr.Name}}
-									</h4>
-								</div>
-								<div class="panel-body" >
-									<div style="cursor:pointer;">
-										<a ng-href="https://www.google.com/maps?q={{sr.Address}}" target="_blank">
+
+								<a href="#top">
+									<div class="panel-heading" ng-click="showOnMap(sr, false)" style="cursor:pointer;">
+										<h4>
+											{{ sr.Name}}
+										</h4>
+									</div>
+								</a>
+								<div class="panel-body list-group" >
+									<a ng-href="https://www.google.com/maps?q={{sr.Address}}" target="_blank">
+										<div class="list-group-item" style="cursor:pointer;">
 											<span class="glyphicon glyphicon-map-marker">
 											</span>
 											{{ sr.Address }}
-										</a>
-									</div>
-									<div>
+										</div>
+									</a>
+									<div class="list-group-item">
 										<div style="float:left;">
 											<span class="glyphicon glyphicon-calendar">
 											</span>
@@ -324,28 +326,36 @@
 										<div ng-bind-html='sr.Hours'>
 										</div>
 									</div>
-									<div>
-										<span class="glyphicon glyphicon-earphone">
-										</span>
+									<div class="list-group-item">
+										<span class="glyphicon glyphicon-earphone"></span>
 										{{ sr.Phone }}
 									</div>
-									<div>
+									<div class="list-group-item">
 										<a ng-href="{{sr.WebSite}}" target="_blank">
 											<span class="glyphicon glyphicon-home">
 											</span>
 											{{ sr.WebSite }}
 										</a>
 									</div>
-									<button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(sr.Index)" data-keyboard="true">
-										More
-									</button>
+									<div class="list-group-item" align="right">
+										<button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(sr.Index)" data-keyboard="true">
+											More
+										</button>
+									</div>
+								</div>
+								<div class="panel-footer text-muted">
+									{{ sr.ServiceMatch }} services matched your search
 								</div>
 							</div>
-
 						</div>
 					</div>
 					<div class="col-sm-7 col-md-8">
-						<div id="map" ng-show="desktop"  >
+						<div class="panel panel-default">
+							<div class="panel-heading" id="ResultsFound">
+								Results <span class="badge" id="resultcount">0</span>
+							</div>
+							<div id="map" ng-show="desktop" >
+							</div>
 						</div>
 					</div>
 				</div>

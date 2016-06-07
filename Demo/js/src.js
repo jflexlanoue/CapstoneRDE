@@ -22,6 +22,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                 		Lat : "",
                 		Long : "",
                 		Service: "",
+                		ServiceMatch: "",
                 		Marker: ""
              };
 
@@ -69,8 +70,11 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
             	.success(function(data,status,header,config){
 
 						$scope.clearResults();
-						$scope.map.setCenter(new google.maps.LatLng(38,-97));
-
+						
+						$scope.map.setOptions(mapOptions);
+						
+						
+						
             		for (var i =0; i < data.ROWCOUNT; i++) {
             				var sr = {
             						Index : i,
@@ -82,11 +86,15 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                             		Lat : data.DATA.GEO_LAT[i],
                             		Long : data.DATA.GEO_LNG[i],
                             		Service: data.DATA.SERVICES[i].replace(/\|/g,'<br />'),
+                            		ServiceMatch: data.DATA.SERVICESMATCH[i]
                     			};
 
                     			sr.Marker = $scope.createGeoMarker(sr, true);
                     			$scope.searchResults.push(sr);
                     }
+                    $("#resultcount").text(data.ROWCOUNT);
+  					$("#resultcountXS").text(data.ROWCOUNT);
+  
             	})
             	.error(function(data,status,header,config){
             		alert("ERROR");
@@ -160,7 +168,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 
             		var infoWindowContentHtml = '<div class="info-window"><h2>' + sr.Name + '</h2><br/>' +
 					 	'<b>Address: </b>'+'<a href="https://www.google.com/maps?q=' + sr.Address + '" target="_blank">' + sr.Address + '</a>'+
-					 	'<br/><b>Hour: </b>'+ sr.Hours +'<br/>'+
+					 	'<br/><b>Hours: </b>'+ sr.Hours +'<br/>'+
 					 	'<b>Phone: </b>' + sr.Phone + '<br/>'+
 					 	'<b>Website: </b>'+'<a href="' + sr.WebSite + '" target="_blank">' + sr.WebSite + '</a>'+
 					 	'<br/><button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(' + sr.Index + ')" data-keyboard="true">More</button></div>';
