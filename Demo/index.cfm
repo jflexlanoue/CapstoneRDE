@@ -145,7 +145,7 @@
 				<div class="row">
 					<div class=" col-xs-offset-1" >
 						<h1 style="color:white" >
-							Hiv Ressource Guide
+							Hiv Resource Guide
 						</h1>
 					</div>
 				</div>
