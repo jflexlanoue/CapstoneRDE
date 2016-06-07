@@ -137,7 +137,9 @@
 
 </script>
 	</head>
-	<body ng-app="myModule" style="min-width:335px; background-color:#DDDDDD" id="top">
+	<body ng-app="myModule" style="min-width:335px; background-color:#DDDDDD" >
+		<span id="top" ng-show="desktop"></span>
+
 		<div class="container-fluid">
 			<div style="background-image: url('img/nycskyline.jpg'); padding-bottom:50px; margin:0px">
 				<div class="row">
@@ -302,12 +304,9 @@
 								Results <span class="badge" id="resultcountXS">0</span>
 							</div>
 							<div class="panel panel-default search-results" dir-paginate ="sr in searchResults | itemsPerPage: 4">
-
-								<a href="#top">
+								<a href="#top" style="color:black;">
 									<div class="panel-heading" ng-click="showOnMap(sr, false)" style="cursor:pointer;">
-										<h4>
-											{{ sr.Name}}
-										</h4>
+										<h4>{{ sr.Name}}</h4>
 									</div>
 								</a>
 								<div class="panel-body list-group" >
@@ -350,11 +349,11 @@
 						</div>
 					</div>
 					<div class="col-sm-7 col-md-8">
-						<div class="panel panel-default">
+						<div class="panel panel-default" ng-show="desktop">
 							<div class="panel-heading" id="ResultsFound">
 								Results <span class="badge" id="resultcount">0</span>
 							</div>
-							<div id="map" ng-show="desktop" >
+							<div id="map"  >
 							</div>
 						</div>
 					</div>
