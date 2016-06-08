@@ -19,7 +19,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
 		<style type="text/css">
-			body { max-width: auto; overflow-x: hidden; position: relative; } #map { height:550px; width:100%; } #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; } ::-webkit-scrollbar { width:0px; } ::-webkit-scrollbar-track-piece { background-coor:transparent; }
+			body { max-width: auto; overflow-x: hidden;  position: relative; } #map { height:550px; width:100%; } #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; } ::-webkit-scrollbar { width:0px; } ::-webkit-scrollbar-track-piece { background-coor:transparent; }
 		</style>
 		<title>
 		</title>
@@ -297,8 +297,8 @@
 					</div>
 					--->
 				<div class="row">
-					<div class="center-block col-sm-5 col-md-4" style="max-width:500px">
-						<div style=" width:auto; overflow:auto;  margin:auto;">
+					<div class="center-block col-sm-5 col-md-4" style="max-width:500px; ">
+						<div style=" width:auto; margin:auto;">
 
 							<div ng-show="mobile" id="ResultsFound">
 								Results <span class="badge" id="resultcountXS">0</span>
