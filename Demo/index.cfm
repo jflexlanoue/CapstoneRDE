@@ -298,7 +298,7 @@
 					--->
 				<div class="row">
 					<div class="center-block col-sm-5 col-md-4" style="max-width:500px; ">
-						<div style=" width:auto; margin:auto;">
+						<div id="srDiv" style="overflow:auto; height:600px; width:auto; margin:auto;">
 
 							<div ng-show="mobile" id="ResultsFound">
 								Results <span class="badge" id="resultcountXS">0</span>

@@ -7,7 +7,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 		});
 		$scope.mobile = screenSize.on('xs', function(match){
 		    $scope.mobile = match;
-		    
+		     $scope.mobile ? $("#srDiv").css({"overflow-y":"hidden","height":"auto","width":"auto"}) : $("#srDiv").css({"overflow-y":"auto","height":"600px"});
 		});
 
 
