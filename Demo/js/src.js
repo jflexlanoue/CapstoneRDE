@@ -1,16 +1,51 @@
 var app = angular.module("myModule", ['angularUtils.directives.dirPagination','ngSanitize','ui.bootstrap','matchMedia']);
- app.controller("myController", function ($scope, $http, $timeout, $compile,screenSize) {
+ app.controller("myController", function ($scope, $http, $timeout, $compile, screenSize) {
 
+
+	$scope.currentPage = 1;
+
+	 if (screenSize.is('sm, md, lg')) {
+	 	$scope.desktop = true;
+	 	$scope.mobile = false;
+	 } else{
+	 	 $scope.mobile = true;
+	 	 $scope.desktop = false;
+	 }
+	 
+	setLayoutSize();
+
+
+	  $scope.pageChanged = function() {
+	  		
+	     	$('#srDiv').scrollTop(0);
+	  };
+  
+  
+  
 	 $scope.desktop = screenSize.on('sm, md, lg', function(match){
 		    $scope.desktop = match;
-		    
+		     setLayoutSize();
 		});
-		$scope.mobile = screenSize.on('xs', function(match){
+	$scope.mobile = screenSize.on('xs', function(match){
 		    $scope.mobile = match;
-		     $scope.mobile ? $("#srDiv").css({"overflow-y":"hidden","height":"auto","width":"auto"}) : $("#srDiv").css({"overflow-y":"auto","height":"600px"});
+		    
+		    setLayoutSize();
+		   
 		});
 
+		function setLayoutSize(){
+		 
+			 if($scope.mobile){
+			 	$("#srDiv").css({"overflow":"hidden","height":"auto"})
+			 	
+			 } else{
+			  	$("#srDiv").css({"overflow":"auto","height":"100%"});
+			  	
+			 }
+		}
+		
 
+/*
 		 	//Structure for 1 Entry of the Search Results
              $scope.searchResult = {
              			Index: "",
@@ -24,8 +59,8 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                 		Service: "",
                 		ServiceMatch: "",
                 		Marker: ""
-             };
-
+             }; 
+*/ 
              $scope.markers = [];
 
 
@@ -48,6 +83,9 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 	       		 	$scope.searchResults[i].Marker.setMap(null);
 	       		 }
 	       		 $scope.searchResults = [];
+	       		 $scope.currentPage = 1;
+	       		 
+	       		 $('#srDiv').scrollTop(0);
        		 }
 
 
@@ -57,8 +95,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
        			 console.log("Requesting Data For Search: Term=" + searchTerms + " Services=" + searchServices + " Providers=" + searchProviders);
 
 
-       			    //Uses $.param function from NodeJS to send POST data
-                	//http://stackoverflow.com/a/31475710
+       			    //Uses $.param function from NodeJS to send POST data http://stackoverflow.com/a/31475710
        			$http({
        						method: 'POST',
         					url: 'json/searchJSON.cfm',
@@ -73,31 +110,54 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 						
 						$scope.map.setOptions(mapOptions);
 						
+						//Settings Google Maps view based on results http://stackoverflow.com/a/22712105
 						
+						var bounds = new google.maps.LatLngBounds();
 						
-            		for (var i =0; i < data.ROWCOUNT; i++) {
-            				var sr = {
-            						Index : i,
-                    				Name : data.DATA.NAME[i],
-                            		WebSite : data.DATA.WEBSITE[i],
-                            		Hours : data.DATA.HOURS[i],
-                            		Phone : data.DATA.PHONE[i],
-                            		Address : data.DATA.ADDRESS[i],
-                            		Lat : data.DATA.GEO_LAT[i],
-                            		Long : data.DATA.GEO_LNG[i],
-                            		Service: data.DATA.SERVICES[i].replace(/\|/g,'<br />'),
-                            		ServiceMatch: data.DATA.SERVICESMATCH[i]
-                    			};
-
-                    			sr.Marker = $scope.createGeoMarker(sr, true);
-                    			$scope.searchResults.push(sr);
+	            		for (var i =0; i < data.ROWCOUNT; i++) {
+	            				var sr = {
+	            						Index : i,
+	                    				Name : data.DATA.NAME[i],
+	                            		WebSite : data.DATA.WEBSITE[i],
+	                            		Hours : data.DATA.HOURS[i],
+	                            		Phone : data.DATA.PHONE[i],
+	                            		Address : data.DATA.ADDRESS[i],
+	                            		Lat : data.DATA.GEO_LAT[i],
+	                            		Long : data.DATA.GEO_LNG[i],
+	                            		Service: data.DATA.SERVICES[i].split("|"),
+	                            		ServiceMatch: data.DATA.SERVICESMATCH[i]
+	                    			};
+	
+								
+	                    		sr.Marker = $scope.createGeoMarker(sr, true);
+	                    		$scope.searchResults.push(sr);
+	                    		
+	                    		bounds.extend(new google.maps.LatLng(sr.Lat,sr.Long));
+	                    }
+                    	
+                    	$("#resultcount").text(data.ROWCOUNT);
+  						$("#resultcountXS").text(data.ROWCOUNT);
+  					
+                    if(data.ROWCOUNT == 0){
+                    	$("#NoResultsWarning").removeClass('hidden');
                     }
-                    $("#resultcount").text(data.ROWCOUNT);
-  					$("#resultcountXS").text(data.ROWCOUNT);
-  
+                    else{
+                    	$("#NoResultsWarning").addClass('hidden');
+                    	
+                    	google.maps.event.addListenerOnce($scope.map, 'bounds_changed', function(event) {
+							  if (this.getZoom() > 15) {
+							    this.setZoom(15);
+							  }
+							  if (this.getZoom() < 3) {
+							    this.setZoom(3);
+							  }
+						});
+						$scope.map.fitBounds(bounds);
+                    }
+
             	})
             	.error(function(data,status,header,config){
-            		alert("ERROR");
+            		$("#serverError").removeClass('hidden')
             	});
        		 };
 
@@ -131,16 +191,20 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                     }
 
                 $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                
                 google.maps.event.addDomListener(window, "resize", function() {
+                    var center = $scope.map.getCenter();
                     google.maps.event.trigger($scope.map, 'resize',{});
-                    $scope.map.setCenter(new google.maps.LatLng(38,-95));
+                    $scope.map.setCenter(center);
+                    
                 });
+
 
                 $scope.map2 = new google.maps.Map(document.getElementById('map2'), mapOptions2);
                 jQuery('#service-info')
                 .on('shown.bs.modal',
                      function(){
-                	   console.log($scope.activeResults.Name);
+                	   
                        google.maps.event.trigger($scope.map2,'resize',{});
                        $scope.map2.setCenter(new google.maps.LatLng($scope.activeResults.Lat,$scope.activeResults.Long));
                        google.maps.event.addDomListener(window, "resize", function() {
