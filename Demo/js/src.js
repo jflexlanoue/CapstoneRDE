@@ -230,12 +230,17 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
                 		//ng-click for a button inside a google map marker
                 		//https://forum.ionicframework.com/t/ng-click-in-google-maps-infowindow/5537/3
 
-            		var infoWindowContentHtml = '<div class="info-window"><h2>' + sr.Name + '</h2><br/>' +
-					 	'<b>Address: </b>'+'<a href="https://www.google.com/maps?q=' + sr.Address + '" target="_blank">' + sr.Address + '</a>'+
-					 	'<br/><b>Hours: </b>'+ sr.Hours +'<br/>'+
-					 	'<b>Phone: </b>' + sr.Phone + '<br/>'+
-					 	'<b>Website: </b>'+'<a href="' + sr.WebSite + '" target="_blank">' + sr.WebSite + '</a>'+
-					 	'<br/><button class="btn btn-default" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(' + sr.Index + ')" data-keyboard="true">More</button></div>';
+            		var infoWindowContentHtml = 
+            			
+            					'<div class="info-window ">'+
+            			
+            						'<h1>' + sr.Name + '</h1>' +
+					 				'<div><span class="glyphicon glyphicon-map-marker"></span>'+'<a href="https://www.google.com/maps?q=' + sr.Address + '" target="_blank">' + sr.Address + '</a></div>'+
+					 				'<div><span class="glyphicon glyphicon-calendar" style="float:left;"></span> '+ sr.Hours + '</div>' + 
+					 				'<div><span class="glyphicon glyphicon-earphone"></span> ' + sr.Phone + '</div>' +
+					 				'<div><span class="glyphicon glyphicon-home"> </span>' + '<a href="' + sr.WebSite + '" target="_blank"> Homepage</a></div>'+
+					 				'<button class="btn btn-default" style="float:right;" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(' + sr.Index + ')" data-keyboard="true">More</button>'+
+					 			'</div>';
 
                 	  var compiled =  $compile(infoWindowContentHtml)($scope);
                 	  var marker = new google.maps.Marker({
