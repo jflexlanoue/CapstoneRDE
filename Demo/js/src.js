@@ -103,6 +103,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
        						method: 'POST',
         					url: 'json/searchJSON.cfm',
         					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        					timeout: 3000,
         					data: $.param({ terms : searchTerms,
         									providers : searchProviders,
         									services : searchServices })
@@ -237,7 +238,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
             			
             					'<div class="info-window ">'+
             			
-            						'<h1>' + sr.Name + '</h1>' +
+            						'<h4>' + sr.Name + '</h4>' +
 					 				'<div><span class="glyphicon glyphicon-map-marker"></span>'+'<a href="https://www.google.com/maps?q=' + sr.Address + '" target="_blank">' + sr.Address + '</a></div>'+
 					 				'<div><span class="glyphicon glyphicon-calendar" style="float:left;"></span> '+ sr.Hours + '</div>' + 
 					 				'<div><span class="glyphicon glyphicon-earphone"></span> ' + sr.Phone + '</div>' +
@@ -245,21 +246,24 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 					 				'<button class="btn btn-default" style="float:right;" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(' + sr.Index + ')" data-keyboard="true">More</button>'+
 					 			'</div>';
 
-                	  var compiled =  $compile(infoWindowContentHtml)($scope);
                 	  var marker = new google.maps.Marker({
                         map: onPageLoad ? $scope.map : $scope.map2,
                         position: new google.maps.LatLng(sr.Lat, sr.Long),
                         title: sr.Name,
                         animation: google.maps.Animation.DROP,
                         fit:true,
-                        content: compiled[0]
+                        content: onPageLoad ? $compile(infoWindowContentHtml)($scope)[0] : null 
                       });
-
-	                  google.maps.event.addListener(marker, 'click', function(){
-
-					      infoWindow.setContent(this.content)
-	                	  infoWindow.open($scope.map, marker);
-	                  });
+                	  
+                	  
+                	  
+                	  if(onPageLoad){
+		                  google.maps.event.addListener(marker, 'click', function(){
+	
+						      infoWindow.setContent(this.content)
+		                	  infoWindow.open($scope.map, marker);
+		                  });
+                	  }
 	                  return marker;
                 };
 
