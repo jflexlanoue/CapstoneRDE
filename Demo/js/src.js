@@ -18,6 +18,9 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 	  $scope.pageChanged = function() {
 	  		
 	     	$('#srDiv').scrollTop(0);
+	     	$('body').scrollTop(0);
+	     	
+	     	
 	  };
   
   
