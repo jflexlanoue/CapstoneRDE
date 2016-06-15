@@ -1,6 +1,6 @@
 	
 
-<cfquery datasource="capstoneDB">
+<cfquery datasource="CapstoneNJITSummer2016_data">
 
 INSERT INTO Loc_Service (Location_ID, Service_ID) VALUES (1, 229);
 INSERT INTO Loc_Service (Location_ID, Service_ID) VALUES (1, 108);

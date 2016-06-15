@@ -12,7 +12,7 @@
 	<cfset SearchServices = form.services>
 
 
-<cfquery name = "SearchResult" dataSource = "capstoneDB">
+<cfquery name = "SearchResult" dataSource = "CapstoneNJITSummer2016_data">
 	    SELECT  COUNT(serv.ID) as servicesMatch, prov.name, prov.website,
 						loc.*,
 						(STUFF((SELECT CAST('| ' + [name] AS VARCHAR(MAX))

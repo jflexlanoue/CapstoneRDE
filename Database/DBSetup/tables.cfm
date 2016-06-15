@@ -1,4 +1,4 @@
-	<cfquery datasource="capstoneDB">
+	<cfquery datasource="CapstoneNJITSummer2016_data">
 
 
 		DROP TABLE Loc_Service;

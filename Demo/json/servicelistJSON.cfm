@@ -5,7 +5,7 @@
 <cftry>
 
 
-	<cfquery name = "ListServices" dataSource = "capstoneDB">
+	<cfquery name = "ListServices" dataSource = "CapstoneNJITSummer2016_data">
 				Select id, name FROM  Service as serv
 	</cfquery>
 

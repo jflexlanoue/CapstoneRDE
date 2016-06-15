@@ -1,5 +1,5 @@
 
-<cfquery datasource="capstoneDB">
+<cfquery datasource="CapstoneNJITSummer2016_data">
 INSERT INTO Service (name) VALUES ('Acupuncture');
 INSERT INTO Service (name) VALUES ('ADAP');
 INSERT INTO Service (name) VALUES ('ADAP - AIDS Drug Assistance Program');

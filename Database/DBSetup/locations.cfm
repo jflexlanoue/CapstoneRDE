@@ -1,5 +1,5 @@
 
-	<cfquery datasource="capstoneDB">
+	<cfquery datasource="CapstoneNJITSummer2016_data">
 INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALUES (( SELECT ID FROM Provider WHERE name = 'Alliance Clinic'), '680 Hillside Drive Stafford, VA 22554', '<ul><li>Sunday: Closed</li><li>Monday: 5:00am - 9:00pm</li><li>Tuesday: 5:00am - 9:00pm</li><li>Wednesday: 7:00am - 4:00pm</li><li>Thursday: 5:00am - 9:00pm</li><li>Friday: 5:00am - 9:00pm</li><li>Saturday: 5:00am - 10:00pm</li></ul>', '(555)555-5546' , '34.33324' , '-99.79715' );
 INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALUES (( SELECT ID FROM Provider WHERE name = 'Animas Medical Clinic'), '992 Hill Street Long Beach, NY 11561', '24/7', '(555)555-4127' , '47.322998' , '-107.48112' );
 INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALUES (( SELECT ID FROM Provider WHERE name = 'Bayhealth Hospital Center'), '438 Jackson Avenue Loveland, OH 45140', 'Monday-Friday: 7:00am - 10:00pm', '(555)555-3180' , '33.067947' , '-108.04312' );

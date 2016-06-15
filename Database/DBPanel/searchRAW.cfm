@@ -6,7 +6,7 @@
 
 
 
-<cfquery name = "SearchResult" dataSource = "capstoneDB">
+<cfquery name = "SearchResult" dataSource = "CapstoneNJITSummer2016_data">
     SELECT DISTINCT prov.name, prov.website,
 					loc.*
     FROM Location AS loc, Provider AS prov, Service as serv, Loc_Service as servloc

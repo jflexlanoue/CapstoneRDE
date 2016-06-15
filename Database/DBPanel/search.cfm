@@ -7,11 +7,6 @@
 	<cfset SearchTerm = "#Form.SearchText#">
 </cfif>
 
-
-
-
-
-
 	<cfform name="SearchForm">
 		<cfinput type = "Text" name = "SearchText"
 	        message = "Please Enter a Search Term" value="#SearchTerm#" required = "Yes">
@@ -19,7 +14,7 @@
 	</cfform>
 
 
-<cfquery name = "SearchResult" dataSource = "capstoneDB">
+<cfquery name = "SearchResult" dataSource = "CapstoneNJITSummer2016_data">
     SELECT DISTINCT prov.name, prov.website,
 					loc.*
     FROM Location AS loc, Provider AS prov, Service as serv, Loc_Service as servloc

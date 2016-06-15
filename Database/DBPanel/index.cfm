@@ -1,3 +1,4 @@
+
 <html>
 	<head>
 	</head>
@@ -7,7 +8,7 @@
 	</br>
 
 
-	<cfquery name = "ViewResult" dataSource = "capstoneDB">
+	<cfquery name = "ViewResult" dataSource = "CapstoneNJITSummer2016_data">
 	    SELECT COUNT( DISTINCT loc.id) AS LocationCount, COUNT( DISTINCT locser.Service_ID) AS ServiceCount, prov.ID, prov.name
 	    FROM Provider AS prov , Location AS loc, Loc_Service as locser
 	    WHERE 	loc.Provider_ID = prov.ID AND locser.Location_ID = loc.ID
