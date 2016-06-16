@@ -15,16 +15,12 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 	setLayoutSize();
 
 
-	  $scope.pageChanged = function() {
-	  		
+	  $scope.pageChanged = function() {	
 	     	$('#srDiv').scrollTop(0);
 	     	$('body').scrollTop(0);
-	     	
-	     	
 	  };
   
-  
-  
+
 	 $scope.desktop = screenSize.on('sm, md, lg', function(match){
 		    $scope.desktop = match;
 		     setLayoutSize();
