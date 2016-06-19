@@ -1,6 +1,6 @@
 
 
-<cfquery datasource="CapstoneNJITSummer2016_data">
+<cfquery datasource="#Settings.DataSource#">
 
 		INSERT INTO Provider (name, website) VALUES ('Alliance Clinic' , 'www.AllianceClinic.capstone');
 INSERT INTO Provider (name, website) VALUES ('Animas Medical Clinic' , 'www.AnimasMedicalClinic.capstone');
