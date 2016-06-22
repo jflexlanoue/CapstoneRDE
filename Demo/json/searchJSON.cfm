@@ -45,7 +45,10 @@
 			</cfif>
 		Group BY prov.name, prov.website, loc.id, loc.provider_id, loc.address, loc.hours, loc.phone, loc.geo_lat, loc.geo_lng
 		ORDER BY COUNT(serv.ID) desc
-	</cfquery>
+</cfquery>
+
+
+
 	<cfoutput>
 		#SerializeJSON(SearchResult,true)#
 	</cfoutput>

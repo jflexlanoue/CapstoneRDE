@@ -5,6 +5,9 @@ https://coldfusionexperts.wordpress.com/2013/11/11/geocoding-with-google-map-api
 Modified to accept full address string as Argument
 <-->
 
+
+<cfset Settings.DataSource = "CapstoneNJITSummer2016_data" >
+
 <cffunction name="findLatLong"  output="false" returntype="struct">
         <cfargument name="address" type="string" required="true" >
 
@@ -40,7 +43,7 @@ Modified to accept full address string as Argument
     </cffunction>
 
 
-	<cfquery name = "emptyGeos" datasource="CapstoneNJITSummer2016_data">
+	<cfquery name = "emptyGeos" datasource="#Settings.DataSource#">
 		SELECT TOP 20 * FROM Location WHERE geo_lat = 0 OR geo_lng = 0;
 	</cfquery>
 
@@ -52,12 +55,11 @@ Modified to accept full address string as Argument
 	   	 	GeoCode: #georesult.latitude#  , #georesult.longitude#
 	</br>
 	</br>
-		<cfquery dataSource = "CapstoneNJITSummer2016_data">
+		<cfquery dataSource = "#Settings.DataSource#">
 			UPDATE Location SET geo_lat = <cfqueryPARAM value = "#georesult.latitude#" CFSQLType = 'CF_SQL_FLOAT'>,
 								geo_lng = <cfqueryPARAM value = "#georesult.longitude#" CFSQLType = 'CF_SQL_FLOAT'>
 							WHERE ID = <cfqueryPARAM value = "#ID#" CFSQLType = 'CF_SQL_BIGINT'>;
 		</cfquery>
-
 
 	</cfoutput>
 

@@ -1,4 +1,4 @@
-
+<cfset Settings.DataSource = "CapstoneNJITSummer2016_data" >
 
 
 <cfset SearchTerm = "">
@@ -14,7 +14,7 @@
 	</cfform>
 
 
-<cfquery name = "SearchResult" dataSource = "CapstoneNJITSummer2016_data">
+<cfquery name = "SearchResult" dataSource = "#Settings.DataSource#">
     SELECT DISTINCT prov.name, prov.website,
 					loc.*
     FROM Location AS loc, Provider AS prov, Service as serv, Loc_Service as servloc

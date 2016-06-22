@@ -1,3 +1,5 @@
+<cfset Settings.DataSource = "CapstoneNJITSummer2016_data" >
+
 <html>
 	<head>
 	</head>
@@ -15,7 +17,7 @@
 			Error Setting up tables.</br></br>
 			#CFCATCH.DETAIL#
 		</cfoutput>
-</cfcatch>
+		</cfcatch>
 	</cftry>
 </div>
 
