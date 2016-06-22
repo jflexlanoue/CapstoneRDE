@@ -164,296 +164,301 @@
 					|	        |
 					|	        |
 					--->
-				<tr >
-					<td colspan="2" style="background: url(img/nycskyline.jpg) no-repeat ; padding-bottom:10px; height:80px;">
-						<div class="row" >
-							<div class="col-xs-offset-1"  >
-
+				<tbody style="height:100%">
+					<tr style="height:80px;">
+						<td colspan="2" style="background: url(img/nycskyline.jpg) no-repeat ; padding-bottom:10px; height:80px;">
+							<div class="row" >
+								<div class="col-xs-offset-1"  >
 									<h2 style="color:white; padding:0px; padding-right:15px; margin:0px; margin-top:5px;"  >
-										<span style="cursor:pointer;" onclick="refreshPage();">HIV Resource Guide</span>
+										<span style="cursor:pointer;" onclick="refreshPage();">
+											HIV Resource Guide
+										</span>
 									</h2>
+								</div>
 							</div>
-						</div>
-						<!--- Main Search Bar --->
-						<div class="row" >
-							<div class="col-xs-1 " style="padding:0px; margin:0px; padding-left:18px;  top: 15px;  font-size: 1.5em;" >
-								<a style="cursor:pointer;" onclick="$('#IntroductionMessage').toggle();">
-									<span  aria-label="What is this?" class="glyphicon glyphicon-question-sign" >
-									</span>
+							<!--- Main Search Bar --->
+							<div class="row" >
+								<div class="col-xs-1 " style="padding:0px; margin:0px; padding-left:18px;  top: 15px;  font-size: 1.5em;" >
+									<a style="cursor:pointer;" onclick="$('#IntroductionMessage').toggle();">
+										<span  aria-label="What is this?" class="glyphicon glyphicon-question-sign" >
+										</span>
+									</a>
+								</div>
+								<div class="col-xs-10  col-sm-5 col-sm-offset-2" style="padding-bottom:0px; " >
+									<form>
+										<div id="BasicSearch" class="input-group " style="margin:0px;" >
+											<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />
+											<div class="input-group-btn">
+												<button type="button" class="btn btn-default " data-toggle="collapse" data-target="#advancedSearch">
+													<span class="caret">
+													</span>
+												</button>
+												<button type="submit" class="btn btn-default"  id="btnSearch" >
+													<span class="glyphicon glyphicon-search">
+													</span>
+													Search
+												</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!--- Advanced Tab Drop Down --->
+							<div class="row collapse" id="advancedSearch" style="padding-bottom:0px;" >
+								<div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-3" style="">
+									<div class="panel panel-default" style="padding-bottom:0px; margin-top:5px;margin-bottom:0px;">
+										<div class="panel-heading">
+											<h4 class="panel-title" style="margin:0px" >
+												Advanced Filters
+											</h4>
+										</div>
+										<div class="panel-body">
+											<form>
+												<div class="form-group" >
+													<label for="ProviderSearch">
+														Any of these Providers:
+													</label>
+													<select class="search-providers form-control selectpicker js-example-responsive" style="width:90%"  multiple="multiple" id="ProviderSearch">
+													</select>
+												</div>
+												<div class="form-group" >
+													<label for="ServiceSearch">
+														Any of these Services:
+													</label>
+													<select class="search-services form-control selectpicker js-example-responsive" style="width:90%" multiple="multiple" id="ServiceSearch">
+													</select>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr style="height:50px;" id="IntroductionMessage" >
+						<td colspan="2"   >
+							<div class="alert alert-info"   style=" margin-bottom:0px; margin-top:5px; " >
+								<a href="#" class="close" onclick="$('#IntroductionMessage').hide()" aria-label="close">
+									&times;
 								</a>
+								<strong>
+									Welcome!
+								</strong>
+								This application was designed to help find providers near you who offer the services you need. You can start using our search by entering what you are looking for or browse our most popular results below.
 							</div>
-							<div class="col-xs-10  col-sm-5 col-sm-offset-2" style="padding-bottom:0px; " >
-								<form>
-									<div id="BasicSearch" class="input-group " style="margin:0px;" >
-										<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />
-										<div class="input-group-btn">
-											<button type="button" class="btn btn-default " data-toggle="collapse" data-target="#advancedSearch">
-												<span class="caret">
-												</span>
+						</td>
+					</tr>
+					<!---  	____________
+						|           |
+						|   ____    |
+						|	|	|   |
+						|	|   |   |
+						|	|   |   |
+						|	|___|   |
+						|	        |
+						--->
+					<tr  style="height:80%">
+						<td style="width:350px; padding-top:5px; padding-right:5px; height:80%" valign="top">
+							<!---  Full Screen Modal View  --->
+							<div class="modal fade" id="service-info" tabindex='-1'  >
+								<div class="modal-dialog modal-lg center-block" style="">
+									<div class="modal-content" >
+										<div class="modal-header" >
+											<button type="button" class="close" data-dismiss="modal">
+												&times;
 											</button>
-											<button type="submit" class="btn btn-default"  id="btnSearch" >
-												<span class="glyphicon glyphicon-search">
-												</span>
-												Search
-											</button>
+											<h4>
+												{{activeResults.Name}}
+											</h4>
 										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-						<!--- Advanced Tab Drop Down --->
-						<div class="row collapse" id="advancedSearch" style="padding-bottom:0px;" >
-							<div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-3" style="">
-								<div class="panel panel-default" style="padding-bottom:0px; margin-top:5px;margin-bottom:0px;">
-									<div class="panel-heading">
-										<h4 class="panel-title" style="margin:0px" >
-											Advanced Filters
-										</h4>
-									</div>
-									<div class="panel-body">
-										<form>
-											<div class="form-group" >
-												<label for="ProviderSearch">
-													Any of these Providers:
-												</label>
-												<select class="search-providers form-control selectpicker js-example-responsive" style="width:90%"  multiple="multiple" id="ProviderSearch">
-												</select>
-											</div>
-											<div class="form-group" >
-												<label for="ServiceSearch">
-													Any of these Services:
-												</label>
-												<select class="search-services form-control selectpicker js-example-responsive" style="width:90%" multiple="multiple" id="ServiceSearch">
-												</select>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr style="height:50px;" id="IntroductionMessage" >
-					<td colspan="2"   >
-						<div class="alert alert-info"   style=" margin-bottom:0px; margin-top:5px; " >
-							<a href="#" class="close" onclick="$('#IntroductionMessage').hide()" aria-label="close">
-								&times;
-							</a>
-							<strong>
-								Welcome!
-							</strong>
-							This application was designed to help find providers near you who offer the services you need. You can start using our search by entering what you are looking for or browse our most popular results below.
-						</div>
-					</td>
-				</tr>
-				<!---  	____________
-					|           |
-					|   ____    |
-					|	|	|   |
-					|	|   |   |
-					|	|   |   |
-					|	|___|   |
-					|	        |
-					--->
-				<tr>
-					<td style="width:350px; padding-top:5px; padding-right:5px " valign="top">
-						<!---  Full Screen Modal View  --->
-						<div class="modal fade" id="service-info" tabindex='-1'  >
-							<div class="modal-dialog modal-lg center-block" style="">
-								<div class="modal-content" >
-									<div class="modal-header" >
-										<button type="button" class="close" data-dismiss="modal">
-											&times;
-										</button>
-										<h4>
-											{{activeResults.Name}}
-										</h4>
-									</div>
-									<div class="modal-body" >
-										<div class="row">
-											<div class="col-sm-5">
-												<div class="panel panel-primary center-block" style="max-width:350px;">
-													<div class="panel-heading">
-														Information
+										<div class="modal-body" >
+											<div class="row">
+												<div class="col-sm-5">
+													<div class="panel panel-primary center-block" style="max-width:350px;">
+														<div class="panel-heading">
+															Information
+														</div>
+														<div class="panel-body list-group">
+															<div class="list-group-item" style="cursor:pointer;">
+																<a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">
+																	<span class="glyphicon glyphicon-map-marker">
+																	</span>
+																	{{ activeResults.Address}}
+																</a>
+															</div>
+															<div class="list-group-item">
+																<div style="float:left;">
+																	<span class="glyphicon glyphicon-calendar">
+																	</span>
+																</div>
+																<div ng-bind-html='activeResults.Hours'>
+																</div>
+															</div>
+															<div class="list-group-item">
+																<span class="glyphicon glyphicon-earphone">
+																</span>
+																{{ activeResults.Phone}}
+															</div>
+															<div class="list-group-item">
+																<a ng-href="{{activeResults.WebSite}}" target="_blank">
+																	<span class="glyphicon glyphicon-home">
+																	</span>
+																	Homepage
+																</a>
+															</div>
+														</div>
 													</div>
-													<div class="panel-body list-group">
-														<div class="list-group-item" style="cursor:pointer;">
-															<a ng-href="https://www.google.com/maps?q={{activeResults.Address}}" target="_blank">
-																<span class="glyphicon glyphicon-map-marker">
-																</span>
-																{{ activeResults.Address}}
-															</a>
+													<div class="panel panel-success center-block" style="max-width:350px;" >
+														<div class="panel-heading">
+															Location
 														</div>
-														<div class="list-group-item">
-															<div style="float:left;">
-																<span class="glyphicon glyphicon-calendar">
-																</span>
-															</div>
-															<div ng-bind-html='activeResults.Hours'>
+														<div class="panel-body">
+															<div id="map2" class="img-responsive" >
 															</div>
 														</div>
-														<div class="list-group-item">
-															<span class="glyphicon glyphicon-earphone">
+													</div>
+												</div>
+												<div class="col-sm-7">
+													<div class="panel panel-info" >
+														<div class="panel-heading">
+															Services
+															<span class="badge">
+																{{activeResults.Service.length}}
 															</span>
-															{{ activeResults.Phone}}
 														</div>
-														<div class="list-group-item">
-															<a ng-href="{{activeResults.WebSite}}" target="_blank">
-																<span class="glyphicon glyphicon-home">
-																</span>
-																Homepage
-															</a>
+														<div class="panel-body list-group" style="">
+															<li class="list-group-item" ng-repeat="name in activeResults.Service">
+																{{name}}
+															</li>
 														</div>
-													</div>
-												</div>
-												<div class="panel panel-success center-block" style="max-width:350px;" >
-													<div class="panel-heading">
-														Location
-													</div>
-													<div class="panel-body">
-														<div id="map2" class="img-responsive" >
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-7">
-												<div class="panel panel-info" >
-													<div class="panel-heading">
-														Services
-														<span class="badge">
-															{{activeResults.Service.length}}
-														</span>
-													</div>
-													<div class="panel-body list-group" style="">
-														<li class="list-group-item" ng-repeat="name in activeResults.Service">
-															{{name}}
-														</li>
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="modal-footer">
-										<button class="btn btn-danger pull-right" data-dismiss="modal">
-											Close
-										</button>
+										<div class="modal-footer">
+											<button class="btn btn-danger pull-right" data-dismiss="modal">
+												Close
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+							<!---  	____________
+								|			|
+								|		    |
+								||||||	    |
+								||||||		|
+								||||||		|
+								||||||		|
+								||||||		|
+								||||||		|
+								|_|_||______|
+								--->
+							<div class="" id="srDiv" style="overflow:scroll; height:100% "  >
+								<div ng-show="mobile" id="ResultsFound" style="padding-bottom:5px;width:300px;" class="center-block">
+									Results
+									<span class="badge" id="resultcountXS">
+										0
+									</span>
+								</div>
+								<div class="alert alert-danger hidden center-block" id="serverError" style="max-width:350px;" >
+									<strong>
+										Error!
+									</strong>
+									Server Connection Failed
+								</div>
+								<div class="alert alert-warning hidden center-block" style="max-width:350px;" id="NoResultsWarning" >
+									No Search Results Found
+								</div>
+								<div style="margin-bottom:5px; max-width:350px;" class="panel panel-default search-results center-block" dir-paginate ="sr in searchResults | itemsPerPage: 4" current-page="currentPage"   >
+									<div class="panel-heading" ng-click="showOnMap(sr, false)" style="cursor:pointer;">
+										<h4 class="" style="margin:0px">
+											{{ sr.Name}}
+										</h4>
+									</div>
+									<div class="panel-body list-group"  style="border-top: 0px none; padding:5px;">
+										<div class="list-group-item" style="cursor:pointer;">
+											<a ng-href="https://www.google.com/maps?q={{sr.Address}}" target="_blank">
+												<span class="glyphicon glyphicon-map-marker">
+												</span>
+												{{ sr.Address}}
+											</a>
+										</div>
+										<div class="list-group-item" style="padding-top:5px;">
+											<div style="float:left;">
+												<span class="glyphicon glyphicon-calendar">
+												</span>
+											</div>
+											<div ng-bind-html='sr.Hours'>
+											</div>
+										</div>
+										<div class="list-group-item">
+											<span class="glyphicon glyphicon-earphone">
+											</span>
+											{{ sr.Phone}}
+										</div>
+										<div class="list-group-item" style="border-bottom: 0 none;">
+											<a ng-href="{{sr.WebSite}}" target="_blank">
+												<span class="glyphicon glyphicon-home">
+												</span>
+												Homepage
+											</a>
+											<button class="btn btn-info pull-right btn-xs" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(sr.Index)" data-keyboard="true">
+												More
+											</button>
+										</div>
+									</div>
+									<div class="panel-footer text-muted " style="font-size:small;" >
+										{{ sr.ServiceMatch}} services matched your search
+									</div>
+								</div>
+								<div align="middle">
+									<dir-pagination-controls
+										max-size="6"
+										direction-links="true"
+										auto-hide ="true"
+										boundary-links="false"
+										on-page-change="pageChanged()"
+										>
+									</dir-pagination-controls>
+								</div>
+							</div>
+						</td>
 						<!---  	____________
 							|			|
 							|		    |
-							||||||	    |
-							||||||		|
-							||||||		|
-							||||||		|
-							||||||		|
-							||||||		|
-							|_|_||______|
+							|	  |||||||
+							|	  |||||||
+							|	  |||||||
+							|	  |||||||
+							|	  |||||||
 							--->
-						<div class="" id="srDiv" style="overflow:auto; height:100%; "  >
-							<div ng-show="mobile" id="ResultsFound" style="padding-bottom:5px;width:300px;" class="center-block">
-								Results
-								<span class="badge" id="resultcountXS">
-									0
-								</span>
-							</div>
-							<div class="alert alert-danger hidden center-block" id="serverError" style="max-width:350px;" >
-								<strong>
-									Error!
-								</strong>
-								Server Connection Failed
-							</div>
-							<div class="alert alert-warning hidden center-block" style="max-width:350px;" id="NoResultsWarning" >
-								No Search Results Found
-							</div>
-							<div style="margin-bottom:5px; max-width:350px;" class="panel panel-default search-results center-block" dir-paginate ="sr in searchResults | itemsPerPage: 4" current-page="currentPage"   >
-								<div class="panel-heading" ng-click="showOnMap(sr, false)" style="cursor:pointer;">
-									<h4 class="" style="margin:0px">
-										{{ sr.Name}}
-									</h4>
-								</div>
-								<div class="panel-body list-group"  style="border-top: 0px none; padding:5px;">
-									<div class="list-group-item" style="cursor:pointer;">
-										<a ng-href="https://www.google.com/maps?q={{sr.Address}}" target="_blank">
-											<span class="glyphicon glyphicon-map-marker">
-											</span>
-											{{ sr.Address}}
-										</a>
-									</div>
-									<div class="list-group-item" style="padding-top:5px;">
-										<div style="float:left;">
-											<span class="glyphicon glyphicon-calendar">
-											</span>
-										</div>
-										<div ng-bind-html='sr.Hours'>
-										</div>
-									</div>
-									<div class="list-group-item">
-										<span class="glyphicon glyphicon-earphone">
-										</span>
-										{{ sr.Phone}}
-									</div>
-									<div class="list-group-item" style="border-bottom: 0 none;">
-										<a ng-href="{{sr.WebSite}}" target="_blank">
-											<span class="glyphicon glyphicon-home">
-											</span>
-											Homepage
-										</a>
-										<button class="btn btn-info pull-right btn-xs" data-toggle="modal" data-target="#service-info" ng-click="changeActiveMarker(sr.Index)" data-keyboard="true">
-											More
-										</button>
-									</div>
-								</div>
-								<div class="panel-footer text-muted " style="font-size:small;" >
-									{{ sr.ServiceMatch}} services matched your search
-								</div>
-							</div>
-							<div align="middle">
-								<dir-pagination-controls
-									max-size="6"
-									direction-links="true"
-									auto-hide ="true"
-									boundary-links="false"
-									on-page-change="pageChanged()"
-									>
-								</dir-pagination-controls>
-							</div>
-						</div>
-					</td>
-					<!---  	____________
-						|			|
-						|		    |
-						|	  |||||||
-						|	  |||||||
-						|	  |||||||
-						|	  |||||||
-						|	  |||||||
-						--->
-					<td style="height:100%; padding-top:5px;" ng-show="desktop" >
-						<table style="height:100%; width:100%">
-							<tr>
-								<td style="height:20px; background-color:#f5f5f5">
-									<div class="panel-heading">
-										Results
-										<span class="badge" id="resultcount">
-											0
-										</span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div style="width:100%; height:100%" >
-										<div  id="map" style="height:100%;width:100%">
-										</div>
-									</div>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
+						<td style="height:80%; padding-top:5px;" ng-show="desktop" >
+							<table style="height:100%; width:100%">
+								<tbody style="100%">
+									<tr style="height:20px;">
+										<td style="height:20px; background-color:#f5f5f5">
+											<div class="panel-heading" style="">
+												Results
+												<span class="badge" id="resultcount">
+													0
+												</span>
+											</div>
+										</td>
+									</tr>
+									<tr style="height:100%">
+										<td style="height:100%">
+											<div style="width:100%; height:100%" >
+												<div id="map" style="height:100%;width:100%">
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 		</div>

@@ -7,13 +7,16 @@
 <cfset Req = url.req >
 
 
-
-
-
-
-
 <cfif Req EQ "getallproviders">
+
+
+	<cfset Offset = form.Offset>
+	<cfset Count = form.ResultCount>
+
+
 	<cfinvoke component="dbQueries" method="GetAllProviders" returnvariable="Allproviders">
+		<cfinvokeargument name="Offset" value="#Offset#">
+		<cfinvokeargument name="Count" value="#Count#">
 	</cfinvoke>
 
 	<cfoutput>
@@ -110,12 +113,16 @@
 
 	<cfif ProvID Eq -1>
 
-		<cfinvoke component="dbQueries" method="CreateProvider" >
+		<cfinvoke component="dbQueries" method="CreateProvider" returnvariable="SaveProvider" >
 			<cfinvokeargument name="Name" value="#ProvName#">
 			<cfinvokeargument name="Website" value="#ProvWebsite#">
 			<cfinvokeargument name="Description" value="#ProvDesc#">
 		</cfinvoke>
+	<cfoutput>
 
+		|#SaveProvider.Id#|
+
+	</cfoutput>
 	<cfelse>
 		<cfinvoke component="dbQueries" method="SaveProvider" returnvariable="SaveProvider">
 			<cfinvokeargument name="ProviderId" value="#ProvID#">
@@ -162,7 +169,6 @@
 
 	<cfinvoke component="dbQueries" method="DeleteLocation">
 		<cfinvokeargument name="LocationId" value="#LocId#">
-
 	</cfinvoke>
 
 
@@ -176,6 +182,67 @@
 
 	<cfinvoke component="dbQueries" method="DeleteProvider">
 		<cfinvokeargument name="ProviderId" value="#ProvId#">
+	</cfinvoke>
+
+
+<cfelseif Req EQ "getprovidercount">
+
+	<cfinvoke component="dbQueries" method="GetProvidersCount" returnvariable="providerCount"></cfinvoke>
+
+	<cfoutput>#SerializeJSON(providerCount,true)#</cfoutput>
+
+
+<cfelseif Req EQ "addservice">
+
+	<cfif NOT isDefined("form.locid")>
+			<cfthrow>
+	</cfif>
+
+		<cfset LocId =form.locid >
+		<cfset ServName =form.servname >
+
+	<cfinvoke component="dbQueries" method="AddService">
+		<cfinvokeargument name="LocId" value="#LocId#">
+		<cfinvokeargument name="ServName" value="#ServName#">
+	</cfinvoke>
+
+
+<cfelseif Req EQ "removeservice">
+
+	<cfif NOT isDefined("form.locid")>
+			<cfthrow>
+	</cfif>
+
+		<cfset LocId =form.locid >
+		<cfset ServicesId =form.servids >
+
+	<cfinvoke component="dbQueries" method="RemoveService">
+		<cfinvokeargument name="LocId" value="#LocId#">
+		<cfinvokeargument name="ServIds" value="#ServicesId#">
+	</cfinvoke>
+
+<cfelseif Req EQ "deleteservice">
+
+	<cfif NOT isDefined("form.servid")>
+			<cfthrow>
+	</cfif>
+
+	<cfset ServiceId =form.servid >
+
+	<cfinvoke component="dbQueries" method="DeleteService">
+		<cfinvokeargument name="ServId" value="#ServiceId#">
+	</cfinvoke>
+
+<cfelseif Req EQ "getprovideroffset">
+
+	<cfif NOT isDefined("form.provid")>
+			<cfthrow>
+	</cfif>
+
+	<cfset ProvId = form.provid >
+
+	<cfinvoke component="dbQueries" method="GetProviderOffset" returnvariable="ProviderOffset">
+		<cfinvokeargument name="ProvId" value="#ProvId#">
 	</cfinvoke>
 
 

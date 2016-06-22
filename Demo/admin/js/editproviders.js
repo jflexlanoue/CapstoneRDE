@@ -8,23 +8,57 @@ AdminPanelProviders.controller('ProviderListController',
 function ProviderListController($scope, $http) {
 
 	
+	$scope.ProviderPage = {};
 	
-	$scope.Providers = [];
+	
+	$scope.ProviderPage.TotalCount = 0;
+	$scope.ProviderPage.PageCurrent = 1;
+	$scope.ProviderPage.PageMax = 1;
+	$scope.ProviderPage.PageSize = 15;
+	
 
+	$scope.Services = [];
+
+		
+	
 	$scope.sProvider = {};
 	$scope.sLocation = {};
-	$scope.sService = {};
+	
+	$scope.sService = "";
 
 	
 	$("#ProvidersTab").addClass("active");
 	
 	
-	$scope.getProviders = function() {
 
+	$scope.getProviders = function(PageNumber, SelectIndex) {
+
+		
+		console.log ("Request Providers Page: " + PageNumber)
+		if(PageNumber < 1 ) {
+			PageNumber = 1;
+		}
+		
+		if(PageNumber > $scope.ProviderPage.PageMax ){
+			PageNumber = $scope.ProviderPage.PageMax;		
+		}
+		
+		
+		var SearchOffset = 0;
+		var SearchCount = $scope.ProviderPage.PageSize;
+		
+		SearchOffset = SearchCount * (PageNumber-1);
+		
+
+		
 		$http({
-			method : 'POST',
-			url : 'json/Query.cfm?req=getallproviders',
+			method 	: 'POST',
+			url 	: 'json/Query.cfm?req=getallproviders',
 			headers : {'Content-Type' : 'application/x-www-form-urlencoded'},
+			data 	: $.param
+							({  Offset : SearchOffset, 
+								ResultCount : SearchCount
+							}),
 			timeout : 3000,
 			
 		}).success(function(data, status, header, config) {
@@ -35,13 +69,16 @@ function ProviderListController($scope, $http) {
 					ArrayIndex : i,
 					Id : data.DATA.ID[i],
 					Name : data.DATA.NAME[i],
-					LocCount : data.DATA.LOCATIONCOUNT[i]
+					LocCount : data.DATA.LOCATIONCOUNT[i],
 				};
 				$scope.Providers.push(sr);
 			}
-			console.log("Retrieved " + data.ROWCOUNT + " providers");
-
-			$scope.SelectProvider(0);
+			
+			console.log("Retrieved Providers: " + SearchOffset + " to " + (SearchOffset+SearchCount)  );
+			
+			$scope.ProviderPage.PageCurrent = PageNumber;
+			
+			$scope.SelectProvider(SelectIndex);
 
 		}).error(function(data, status, header, config) {
 			console.log('error');
@@ -126,8 +163,14 @@ function ProviderListController($scope, $http) {
 				
 				if(ProvID == -1) {
 					
+					var newProvId = result.split("|")[1];
+
+					
 					console.log("Created Provider " + ProvName);
-					$scope.getProviders();
+					
+					window.location.href = "./?p=providers&provid=" + newProvId;
+					
+					//$scope.getProviders($scope.ProviderPage.PageCurrent, 0);
 
 				} else{
 					console.log("Saved Provider(" + ProvID + ") " + ProvName);
@@ -195,8 +238,6 @@ function ProviderListController($scope, $http) {
 						$scope.sLocation.Services.push(Service);
 					}
 
-					$scope.sService = $scope.sLocation.Services[0];
-
 					console.log("Location Loaded(" + $scope.sLocation.Id + ") " + $scope.sLocation.Address);
 					
 					$scope.UpdateMap();
@@ -204,7 +245,6 @@ function ProviderListController($scope, $http) {
 				}).error(function(data, status, header, config) {
 			console.log('error');
 		});
-		
 	}
 
 	$scope.SaveLocation = function() {
@@ -312,7 +352,7 @@ function ProviderListController($scope, $http) {
 				id : ProvId,
 			}),
 			'success' : function(result) {
-				$scope.getProviders();
+				$scope.getProviders($scope.ProviderPage.PageCurrent,0);
 			}
 		});
 	}
@@ -369,12 +409,163 @@ function ProviderListController($scope, $http) {
 				$scope.$apply();
 			}
 		});
+	}
+	
+	$scope.GetProviderCount = function(){
 		
+		console.log("Getting Provider Count");
 		
+		$http({
+			method : 'POST',
+			url : 'json/Query.cfm?req=getprovidercount',
+			headers : {
+				'Content-Type' : 'application/x-www-form-urlencoded'
+			},
+			timeout : 3000,
+		}).success(
+				function(data, status, header, config) {
+
+					$scope.ProviderPage.TotalCount = data.DATA.PROVIDERCOUNT[0];
+					$scope.ProviderPage.PageCurrent = 1;
+					$scope.ProviderPage.PageMax = Math.ceil($scope.ProviderPage.TotalCount / $scope.ProviderPage.PageSize);
+					
+					console.log($scope.ProviderPage.TotalCount + " Providers. " + $scope.ProviderPage.PageMax + " Pages" );
+						
+					
+					$scope.LoadFirstPage();
+					
+				}).error(function(data, status, header, config) {
+			console.log('Error Getting Provider Count');
+		});
+	};
+	
+	
+	$scope.SwitchPage = function(cmd) {
+		console.log(cmd);
+		
+		var PageRequest = 0;
+		
+		if($scope.ProviderPage.PageCurrent == 1){
+			if(cmd == "first" || cmd == "prev"){
+				return;
+			}
+		}
+		
+		if($scope.ProviderPage.PageCurrent == $scope.ProviderPage.PageMax){
+			if(cmd == "next" || cmd == "last"){
+				return;
+			}
+		}
+		
+		if(cmd == "first"){
+			PageRequest = 1;
+		} else if (cmd == "prev"){
+			PageRequest = $scope.ProviderPage.PageCurrent - 1;
+		} else if (cmd == "next"){
+			PageRequest = $scope.ProviderPage.PageCurrent + 1;
+		} else if (cmd == "last"){
+			PageRequest = $scope.ProviderPage.PageMax;
+		}
+		
+		$scope.getProviders(PageRequest,0);
+
+		
+	};
+	
+	$scope.getServices = function() {
+
+		$http({
+			method : 'POST',
+			url : 'json/Query.cfm?req=getallservices',
+			headers : { 'Content-Type' : 'application/x-www-form-urlencoded' },
+			timeout : 3000,
+			
+		}).success(function(data, status, header, config) {
+
+			
+			$scope.Services = data.DATA.NAME;
+			
+			console.log("Retrieved " + data.ROWCOUNT + " services");
+
+
+		}).error(function(data, status, header, config) {
+			console.log('error');
+		});
+	};
+	
+	
+	$scope.AddServiceToLocation = function(){
+
+		var LocationId = $scope.sLocation.Id;
+		
+		$.ajax({
+			'url' : 'json/Query.cfm?req=addservice',
+			'type' : 'POST',
+			'data' : ({
+				locid : LocationId,
+				servname : $scope.sService
+			}),
+			'success' : function(result) {
+					
+				console.log("Added Service: " + $scope.sService);
+				$scope.SelectLocation();
+			}
+		
+		});
+	};
+	
+	$scope.RemoveServiceFromLocation = function(){
+		
+		var ServicesChecked = $("[class=ServiceCheck]");
+		
+		var ServicesId = [];
+		
+		for (var i = 0; i < ServicesChecked.length; i++) {
+			if(ServicesChecked[i].checked){
+				ServicesId.push(ServicesChecked[i].value);
+			}
+		}
+		
+		var LocationId = $scope.sLocation.Id;
+		
+		$.ajax({
+			'url' : 'json/Query.cfm?req=removeservice',
+			'type' : 'POST',
+			'data' : ({
+				locid : LocationId,
+				servids : ServicesId.toString()
+			}),
+			'success' : function(result) {
+					
+				console.log("Removed Services: " + ServicesId);
+				
+				$scope.SelectLocation();
+			}
+		
+		});
+	};
+	
+	
+	$scope.InitSelectedProvider = function(InitProviderOffset){
+		$scope.InitProviderOffset = InitProviderOffset;
 	}
 	
 	
-	$scope.getProviders();
+	$scope.LoadFirstPage = function(){
+		
+		var InitPage = Math.ceil( $scope.InitProviderOffset / $scope.ProviderPage.PageSize);
+		var InitPageIndex = $scope.InitProviderOffset % $scope.ProviderPage.PageSize;
+		
+		$scope.getProviders(InitPage, InitPageIndex-1);
+		
+	}
 	
+	$scope.InitProviderOffset = 0;
 
+	
+	$scope.getServices();
+	
+	$scope.GetProviderCount();
+	
+	
 });

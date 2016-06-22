@@ -1,8 +1,38 @@
 <script src="js/editproviders.js"></script>
+<script>
 
-<table id="ProviderTable"  style="width:100%;height:90%"  ng-app="AdminPanel">
-	<tr ng-controller="ProviderListController" style="">
-		<td style="vertical-align:top; width:300px;">
+<cfif isDefined("url.provid")>
+
+	<cfset ProvId = url.provid >
+
+	<cfinvoke component="json/dbQueries" method="GetProviderOffset" returnvariable="ProviderOffset">
+		<cfinvokeargument name="ProvId" value="#ProvId#">
+	</cfinvoke>
+
+		<cfoutput>
+			var SelectedProviderOffset =  #ProviderOffset#;
+		</cfoutput>
+
+<cfelse>
+
+		<cfoutput>
+			var SelectedProviderOffset =  1;
+		</cfoutput>
+
+</cfif>
+
+	 $(document).ready(function () {
+		angular.element($('#ProviderController')).scope().InitSelectedProvider(SelectedProviderOffset);
+	 });
+
+</script>
+
+
+
+<table id="ProviderTable"  style="min-width:850px;height:90%"  ng-app="AdminPanel">
+	<tr ng-controller="ProviderListController" style="" id="ProviderController">
+
+		<td style="vertical-align:top; min-width:300px; max-width:300px;">
 			<!---
 				Confirmation Messages
 				--->
@@ -59,11 +89,12 @@
 				</div>
 			</div>
 			<!---
+				//////////////////////////
 				--->
 			<div class="panel panel-default" style="height:100%">
 				<div class="panel-heading" >
 					Providers
-					<span ng-bind="Providers.length" class="label label-pill label-default">
+					<span ng-bind="ProviderPage.TotalCount" class="label label-pill label-default">
 					</span>
 					<button type="button" class="btn btn-info pull-right btn-xs"  id="BtnNewProvider" ng-click="NewProvider()"  >
 						<span class="glyphicon glyphicon-file" >
@@ -71,8 +102,29 @@
 						New
 					</button>
 				</div>
-				<div class="panel-body">
-					<div class="list-group" style="overflow:scroll;height:900px;">
+				<div class="panel-body ">
+					<div class="" style="padding-bottom:15px; padding-left:25px">
+						<div class="input-group " style="width:auto; ">
+							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('first')" ng-class="{disabled : ProviderPage.PageCurrent == 1}">
+								<span class="glyphicon glyphicon-fast-backward" style="">
+								</span>
+							</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('prev')" ng-class="{disabled : ProviderPage.PageCurrent == 1}">
+								{{ProviderPage.PageCurrent - 1}}
+							</button>
+							<button type="button" class="btn btn-primary btn-sm" >
+								{{ProviderPage.PageCurrent}}
+							</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('next')" ng-class="{disabled : ProviderPage.PageCurrent == ProviderPage.PageMax}">
+								{{ProviderPage.PageCurrent + 1}}
+							</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('last')" ng-class="{disabled : ProviderPage.PageCurrent == ProviderPage.PageMax}">
+								<span class="glyphicon glyphicon-fast-forward" style="">
+								</span>
+							</button>
+						</div>
+					</div>
+					<div class="list-group" style="height:900px;">
 						<div ng-class="{active : sProvider.ArrayIndex == prov.ArrayIndex}" ng-click="SelectProvider(prov.ArrayIndex)" class="list-group-item" ng-repeat="prov in Providers" style="cursor:pointer;">
 							{{prov.Name}} ({{prov.LocCount}})
 						</div>
@@ -251,25 +303,61 @@
 															</label>
 														</td>
 														<td>
+															Add Service:
 															<div class="input-group" style="">
-																<select class="form-control" id="ServiceList" ng-options='serv.Name for serv in sLocation.Services' ng-model="sService" ng-change="SelectService()">
-																</select>
+
+
+																<input type="text" name="LocationService" list="AllServices" style="width:400px;" class="form-control" ng-model="sService" >
+																<datalist id="AllServices">
+																	<option  ng-repeat="serv in Services">{{serv}}</option>
+																</datalist>
+
+
 																<div class="input-group-btn">
-																	<button type="button" class="btn btn-danger pull-right disabled"  id="BtnDeleteService">
-																		<span class="glyphicon glyphicon-trash " style="">
+																	<button type="button" class="btn btn-success pull-right"  id="BtnAddService" ng-click="AddServiceToLocation()" >
+																		<span class="glyphicon glyphicon-save " style="">
 																		</span>
-																		Remove
+																		Add
 																	</button>
+
 																</div>
 															</div>
-															<div class="input-group" style="">
-																<input type="text" class="form-control" id="" style="" />
-																<div class="input-group-btn">
-																	<button type="button" class="btn btn-info pull-right disabled"  id="BtnCreateService" >
-																		<span class="glyphicon glyphicon-file " style="">
-																		</span>
-																		New
-																	</button>
+														</td>
+													</tr>
+													<tr ng-class="{hidden : sLocation.Id == -1}">
+														<td>
+														</td>
+														<td>
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	Services Tool
+																</div>
+																<div class="panel-body">
+																	<table class="table table-striped table-bordered" style="margin-top:15px;">
+																		<thead>
+																			<tr>
+																				<th>
+																					Service Name
+																				</th>
+																				<th>
+																					<button type="button" class="btn btn-danger btn-xs  pull-right"  id="BtnRemoveService" ng-click="RemoveServiceFromLocation()" >
+																						<span class="glyphicon glyphicon-trash " style="">
+																						</span>
+																					</button>
+																				</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr ng-repeat="serv in sLocation.Services">
+																				<td>
+																					{{serv.Name}}
+																				</td>
+																				<td style="text-align:center;">
+																					<input type="checkbox" class="ServiceCheck" value="{{serv.Id}}" >
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
 																</div>
 															</div>
 														</td>

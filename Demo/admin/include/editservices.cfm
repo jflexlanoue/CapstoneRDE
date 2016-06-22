@@ -22,7 +22,7 @@
 										Save
 									</button>
 
-									<button type="button" class="btn btn-danger disabled"  id="BtnDeleteService" style="" >
+									<button type="button" class="btn btn-danger"  id="BtnDeleteService"  ng-click="DeleteService()" >
 										<span class="glyphicon glyphicon-trash" >
 										</span>
 										Delete

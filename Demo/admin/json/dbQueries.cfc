@@ -1,16 +1,16 @@
 <cfcomponent displayname="dbQueries" hint="db access for Admins">
 
-	<cfset Settings.DataSource = "CapstoneNJITSummer2016_data" >
+<cfset Settings.DataSource = "CapstoneNJITSummer2016_data" >
 
-	<cffunction name="GetAllProviders" hint="Gets all customer from the database" returntype="query" output="no">
+	<cffunction name="GetAllProviders" hint="Gets all providers from the database" returntype="query" output="no">
+		<cfargument name="Offset" type="int" required="yes">
+		<cfargument name="Count" type="int" required="yes">
 		<cfquery name="QueryAllProviders" datasource = "#Settings.DataSource#" >
-
-
 				SELECT prov.id, prov.name, (SELECT COUNT(loc.ID) FROM location as loc WHERE loc.Provider_ID = prov.ID ) as locationcount FROM provider as prov
 
 				ORDER BY prov.name asc
-				<!---		OFFSET  50 ROWS
-							FETCH NEXT 5 ROWS ONLY--->
+						OFFSET  #Offset# ROWS
+							FETCH NEXT #Count# ROWS ONLY
 		</cfquery>
 		<cfreturn QueryAllProviders>
 	</cffunction>
@@ -19,9 +19,9 @@
 	<cffunction name="GetAllServices" hint="Gets all services from the database" returntype="query">
 		<cfquery name="GetAllServices" datasource = "#Settings.DataSource#" >
 
-				SELECT serv.id, serv.name, COUNT(servloc.Location_ID) as locationcount FROM service as serv , Loc_Service as servloc
-					WHERE servloc.Service_ID = serv.ID
-				GROUP BY serv.id , serv.name
+				SELECT servselect.id, servselect.name, ( SELECT COUNT(Location_ID) FROM Service as serv , Loc_Service as servloc WHERE servselect.ID = serv.ID AND  servloc.Service_ID = serv.ID   ) as locationcount FROM service as servselect
+
+				ORDER BY servselect.name
 
 		</cfquery>
 		<cfreturn GetAllServices>
@@ -62,6 +62,7 @@
             WHERE loc.ID = <cfqueryPARAM value = "#LocationId#" CFSQLType = 'CF_SQL_BIGINT'>
 				  AND servloc.Location_ID = loc.ID
 				  AND servloc.Service_ID = serv.ID
+			ORDER BY serv.name
 		</cfquery>
 		<cfset ServicesID = ArrayNew(1)>
 		<cfset ServicesID[1] = ValueList(LocationServices.ID,"|")>
@@ -130,7 +131,7 @@
 		<cfargument name="Hours" type="string" required="yes">
 		<cfquery name = "CreateLocationQuery" dataSource = "#Settings.DataSource#" >
 
-				INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng) VALUES
+				INSERT INTO Location (Provider_ID, address, hours, phone, geo_lat, geo_lng)  VALUES
 				( 	<cfqueryPARAM value = '#ProviderId#' CFSQLType = 'CF_SQL_BIGINT' >,
 					<cfqueryPARAM value = '#Address#' CFSQLType = 'CF_SQL_VARCHAR' >,
 					<cfqueryPARAM value = '#Hours#' CFSQLType = 'CF_SQL_VARCHAR' >,
@@ -141,6 +142,7 @@
 		</cfquery>
 	</cffunction>
 
+
 	<cffunction name="DeleteLocation" hint="Delete location from the database" >
 		<cfargument name="LocationId" type="int" required="yes">
 		<cfquery dataSource = "#Settings.DataSource#" >
@@ -149,19 +151,22 @@
 			</cfquery>
 	</cffunction>
 
-	<cffunction name="CreateProvider" hint="Create new provider " >
+
+	<cffunction name="CreateProvider" hint="Create new provider " returntype="query" >
 		<cfargument name="Name" type="string" required="yes">
 		<cfargument name="Website" type="string" required="yes">
 		<cfargument name="Description" type="string" required="yes">
 		<cfquery name = "CreateProviderQuery" dataSource = "#Settings.DataSource#" >
 
-				INSERT INTO Provider (name, website, description) VALUES
+				INSERT INTO Provider (name, website, description) Output Inserted.Id VALUES
 					(	<cfqueryPARAM value = '#Name#' CFSQLType = 'CF_SQL_VARCHAR' > ,
 						<cfqueryPARAM value = '#Website#' CFSQLType = 'CF_SQL_VARCHAR' >,
 						<cfqueryPARAM value = '#Description#' CFSQLType = 'CF_SQL_VARCHAR' >
 					);
 
 		</cfquery>
+
+		<cfreturn CreateProviderQuery>
 	</cffunction>
 
 
@@ -170,12 +175,80 @@
 		<cfquery dataSource = "#Settings.DataSource#" >
 
 				DELETE FROM Provider WHERE id= <cfqueryPARAM value = '#ProviderId#' CFSQLType = 'CF_SQL_BIGINT' >;
+
 				DELETE FROM Loc_service WHERE Location_ID IN
 						(SELECT ID FROM Location Where Provider_ID = <cfqueryPARAM value = '#ProviderId#' CFSQLType = 'CF_SQL_BIGINT' >);
 
 				DELETE FROM Location WHERE Provider_ID = <cfqueryPARAM value = '#ProviderId#' CFSQLType = 'CF_SQL_BIGINT' >;
-
 		</cfquery>
+	</cffunction>
+
+
+	<cffunction name="GetProvidersCount" hint="Gets count of providers from the database" returntype="query" output="no">
+		<cfquery name="QueryProviderCount" datasource = "#Settings.DataSource#" >
+				SELECT COUNT(prov.id) as ProviderCount FROM provider as prov
+		</cfquery>
+		<cfreturn QueryProviderCount>
+	</cffunction>
+
+
+	<cffunction name="AddService" hint="Associate Service with Location"  output="no">
+		<cfargument name="LocId" type="int" required="yes">
+		<cfargument name="ServName" type="int" required="yes">
+		<cfquery name="FindExistingServiceName" datasource = "#Settings.DataSource#" >
+				SELECT id FROM Service WHERE Name = <cfqueryPARAM value = '#ServName#' CFSQLType = 'CF_SQL_VARCHAR' >;
+		</cfquery>
+		<cfif FindExistingServiceName.recordcount Eq 0>
+			<cfquery datasource = "#Settings.DataSource#">
+				INSERT INTO Service (name) VALUES ( <cfqueryPARAM value = '#ServName#' CFSQLType = 'CF_SQL_VARCHAR' >);
+			</cfquery>
+		</cfif>
+		<cfquery datasource = "#Settings.DataSource#">
+				INSERT INTO Loc_service (Location_ID, Service_ID)
+						VALUES ( <cfqueryPARAM value = '#LocId#' CFSQLType = 'CF_SQL_BIGINT' >,
+
+								(SELECT Id FROM Service WHERE Name = <cfqueryPARAM value = '#ServName#' CFSQLType = 'CF_SQL_VARCHAR' >)
+						 		);
+		</cfquery>
+	</cffunction>
+
+
+	<cffunction name="RemoveService" hint="Remove Service from Location"  output="no">
+		<cfargument name="LocId" type="int" required="yes">
+		<cfargument name="ServIds" type="int" required="yes">
+		<cfquery datasource = "#Settings.DataSource#" >
+				DELETE FROM Loc_service
+							WHERE  Location_ID = <cfqueryPARAM value = '#LocId#' CFSQLType = 'CF_SQL_BIGINT' >
+								AND Service_ID IN ( <cfqueryPARAM value = '#ServIds#' CFSQLType = 'CF_SQL_BIGINT' LIST='true'  > )
+		</cfquery>
+	</cffunction>
+
+
+	<cffunction name="DeleteService" hint="Delete Service from Database"  output="no">
+			<cfargument name="ServId" type="int" required="yes">
+
+
+			<cfquery datasource = "#Settings.DataSource#" >
+					DELETE FROM Loc_service
+								WHERE  Service_ID = <cfqueryPARAM value = '#ServId#' CFSQLType = 'CF_SQL_BIGINT' >;
+			</cfquery>
+
+			<cfquery datasource = "#Settings.DataSource#" >
+					DELETE FROM Service
+								WHERE  ID = <cfqueryPARAM value = '#ServId#' CFSQLType = 'CF_SQL_BIGINT' >;
+			</cfquery>
+	</cffunction>
+
+	<cffunction name="GetProviderOffset" hint="Get Offset of Provider" output="no" returntype="string">
+		<cfargument name="ProvId" type="int" required="yes">
+
+		<cfquery name="QueryPageofProvider" datasource = "#Settings.DataSource#"  >
+			SELECT prov.Row as Row FROM (SELECT ROW_NUMBER() OVER(ORDER BY Name) AS Row, Id , Name FROM provider) as prov
+					WHERE prov.id = <cfqueryPARAM value = '#ProvId#' CFSQLType = 'CF_SQL_BIGINT' >;
+		</cfquery>
+
+		<cfreturn QueryPageofProvider.Row>
+
 	</cffunction>
 
 

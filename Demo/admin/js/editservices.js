@@ -18,6 +18,9 @@ function ServiceListController($scope, $http) {
 	
 	$scope.getServices = function() {
 
+		$scope.sService = {};
+		$scope.Services = [];
+		
 		$http({
 			method : 'POST',
 			url : 'json/Query.cfm?req=getallservices',
@@ -27,6 +30,8 @@ function ServiceListController($scope, $http) {
 			timeout : 3000,
 			
 		}).success(function(data, status, header, config) {
+			
+			
 			for (var i = 0; i < data.ROWCOUNT; i++) {
 				var sr = {
 					ArrayIndex : i,
@@ -78,7 +83,24 @@ function ServiceListController($scope, $http) {
 			}
 		});
 		
+	};
+	
+	
+	$scope.DeleteService = function(){
 		
+		var ServiceId = $scope.sService.Id;
+		console.log("Deleted (" + ServiceId + ") ");
+		
+		$.ajax({
+			'url' : 'json/Query.cfm?req=deleteservice',
+			'type' : 'POST',
+			'data' : ({
+				servid : ServiceId
+			}),
+			'success' : function(result) {
+				$scope.getServices();
+			}
+		});
 		
 	}
 	
