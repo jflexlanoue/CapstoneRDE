@@ -79,7 +79,7 @@
 		<cfargument name="Address" type="string" required="yes">
 		<cfargument name="Phone" type="string" required="yes">
 		<cfargument name="GeoLat" type="string" required="yes">
-		<cfargument name="GeoLng" type="float" required="yes">
+		<cfargument name="GeoLng" type="string" required="yes">
 		<cfargument name="Hours" type="string" required="yes">
 		<cfquery name = "UpdateLocation" dataSource = "#Settings.DataSource#" >
 				UPDATE location
