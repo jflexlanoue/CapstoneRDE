@@ -36,6 +36,30 @@
 			<!---
 				Confirmation Messages
 				--->
+			<div id="MessageModal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								&times;
+							</button>
+							<h4 class="modal-title">
+								{{MessageModal.Title}}
+							</h4>
+						</div>
+						<div class="modal-body">
+							{{MessageModal.Body}}
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn" data-dismiss="modal" ng-class="{'btn-danger' : MessageModal.IsError == true, 'btn-success' : MessageModal.IsError == false  }">
+								Ok
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div id="DeleteLocation" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<!-- Modal content-->
@@ -52,7 +76,7 @@
 							Are you sure you want to delete this location: {{sLocation.Address}}
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="DeleteLocation()">
+							<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="DeleteLocation()">
 								Yes
 							</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -78,7 +102,7 @@
 							Are you sure you want to delete this Provider: {{sProvider.Name}} </br> And its {{sProvider.Locations.length}} locations
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="DeleteProvider()">
+							<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="DeleteProvider()">
 								Yes
 							</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -136,7 +160,7 @@
 			<div id="ProviderContainer">
 				<div class="panel panel-default" style="">
 					<div class="panel-heading" >
-						Provider Info
+						Provider Info <span class="label label-primary label-pill ">ID: {{sProvider.Id}}</span>
 						<button type="button" class="btn btn-danger pull-right btn-xs"  id="BtnDeleteProvider" style="margin-left:20px;"  data-toggle="modal" data-target="#DeleteProvider" >
 							<span class="glyphicon glyphicon-trash" >
 							</span>
@@ -209,7 +233,7 @@
 									<div class="" id="LocationContainer" >
 										<div class="panel panel-default" style="margin-left:20px;margin-top:20px;">
 											<div class="panel-heading" >
-												Location Info
+												Location Info <span class="label label-primary label-pill ">ID: {{sLocation.Id}}</span>
 												<button type="button" class="btn btn-danger pull-right btn-xs "  id="BtnDeleteLocation" style="margin-left:20px;" data-toggle="modal" data-target="#DeleteLocation"  >
 													<span class="glyphicon glyphicon-trash" >
 													</span>
@@ -336,9 +360,8 @@
 																	<table class="table table-striped table-bordered" style="margin-top:15px;">
 																		<thead>
 																			<tr>
-																				<th>
-																					Service Name
-																				</th>
+																				<th>Id</th>
+																				<th>Service Name</th>
 																				<th>
 																					<button type="button" class="btn btn-danger btn-xs  pull-right"  id="BtnRemoveService" ng-click="RemoveServiceFromLocation()" >
 																						<span class="glyphicon glyphicon-trash " style="">
@@ -349,6 +372,7 @@
 																		</thead>
 																		<tbody>
 																			<tr ng-repeat="serv in sLocation.Services">
+																				<td>{{serv.Id}}</td>
 																				<td>
 																					{{serv.Name}}
 																				</td>

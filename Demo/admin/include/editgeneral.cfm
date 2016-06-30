@@ -12,17 +12,17 @@
 
 
 <cfquery name="QueryProvidersNoLocation" datasource = "#Settings.DataSource#" >
-			SELECT COUNT(prov.Id) as provcount FROM provider as prov
+			SELECT prov.Id, prov.Name  FROM provider as prov
 			WHERE prov.Id NOT IN (SELECT provider_ID FROM Location)
 </cfquery>
 
 <cfquery name="QueryServicesNoLocation" datasource = "#Settings.DataSource#" >
-			SELECT COUNT(serv.Id) as servcount FROM service as serv
+			SELECT serv.Id, serv.Name FROM service as serv
 			WHERE serv.Id NOT IN (SELECT service_ID FROM Loc_Service)
 </cfquery>
 
 <cfquery name="QueryLocationsNoServices" datasource = "#Settings.DataSource#" >
-			SELECT COUNT(loc.Id) as loccount FROM location as loc
+			SELECT loc.Id, loc.Address, loc.Provider_ID FROM location as loc
 			WHERE loc.Id NOT IN (SELECT Location_ID FROM Loc_Service)
 </cfquery>
 
@@ -104,21 +104,32 @@
 					<div class="list-group" >
 						<div class="list-group-item" >
 							Providers without Location:
-							<cfoutput>
-								#QueryProvidersNoLocation.provcount#
+
+							<cfoutput>#QueryProvidersNoLocation.RecordCount#</cfoutput>
+								</br>
+							<cfoutput query="QueryProvidersNoLocation">
+								<a href="./?p=providers&provid=#ID#">
+									#Name#
+								</a>
 							</cfoutput>
 						</div>
 						<div class="list-group-item" >
 							Locations without Service:
-							<cfoutput>
-								#QueryLocationsNoServices.loccount#
+							<cfoutput>#QueryLocationsNoServices.RecordCount#</cfoutput>
+								</br>
+							<cfoutput query="QueryLocationsNoServices">
+								<a href="./?p=providers&provid=#Provider_ID#">#Address#</a>
 							</cfoutput>
+
 						</div>
 						<div class="list-group-item" >
 							Services without Location:
-							<cfoutput>
-								#QueryServicesNoLocation.servcount#
+							<cfoutput>#QueryServicesNoLocation.RecordCount#</cfoutput>
+							</br>
+							<cfoutput query="QueryServicesNoLocation">
+								<a href="./?p=services&servid=#ID#">#Name#</a>
 							</cfoutput>
+
 						</div>
 
 						<div class="list-group-item" >
@@ -160,7 +171,8 @@
 					<div class="list-group" >
 						<cfoutput query="QueryServicesMostLocation">
 							<div class="list-group-item" >
-									#Name# (#loccount#)
+
+									<a href="./?p=services&servid=#ID#">#Name# (#loccount#)</a>
 							</div>
 						</cfoutput>
 					</div>

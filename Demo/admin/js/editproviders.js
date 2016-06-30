@@ -30,6 +30,27 @@ function ProviderListController($scope, $http) {
 	$("#ProvidersTab").addClass("active");
 	
 	
+	
+	$scope.MessageModal = {};
+	$scope.MessageModal.Title = "Default Title";
+	$scope.MessageModal.Body = "Default Body";
+	
+	$scope.MessageModal.IsError = true;
+	
+	
+	$scope.ShowMessage = function(Title, Body, IsError){
+		
+		
+		
+		$scope.MessageModal.Title = Title;
+		$scope.MessageModal.Body = Body;
+		$scope.MessageModal.IsError = IsError;
+		
+		$scope.$apply();
+		$('#MessageModal').modal('show');
+		
+	};
+	
 
 	$scope.getProviders = function(PageNumber, SelectIndex) {
 
@@ -77,7 +98,6 @@ function ProviderListController($scope, $http) {
 			console.log("Retrieved Providers: " + SearchOffset + " to " + (SearchOffset+SearchCount)  );
 			
 			$scope.ProviderPage.PageCurrent = PageNumber;
-			
 			$scope.SelectProvider(SelectIndex);
 
 		}).error(function(data, status, header, config) {
@@ -88,7 +108,8 @@ function ProviderListController($scope, $http) {
 	$scope.SelectProvider = function(ArrayIndex) {
 
 		var Provid = $scope.Providers[ArrayIndex].Id;
-
+		
+		
 		$http({
 			method : 'POST',
 			url : 'json/Query.cfm?req=getprovider',
@@ -135,9 +156,6 @@ function ProviderListController($scope, $http) {
 
 			$scope.SelectLocation();
 			
-			
-			
-
 		}).error(function(data, status, header, config) {
 			console.log('error');
 		});
@@ -169,17 +187,18 @@ function ProviderListController($scope, $http) {
 					console.log("Created Provider " + ProvName);
 					
 					window.location.href = "./?p=providers&provid=" + newProvId;
-					
-					//$scope.getProviders($scope.ProviderPage.PageCurrent, 0);
 
 				} else{
 					console.log("Saved Provider(" + ProvID + ") " + ProvName);
-					//$('#ProviderSaveResult').text(result);
+					
 
 					$scope.Providers[$scope.sProvider.ArrayIndex].Name = ProvName;
-					$scope.$apply();
-				
+					
 					$scope.SelectProvider($scope.sProvider.ArrayIndex);
+					
+					$scope.$apply();
+					
+					$scope.ShowMessage("Success", "Provider Successfuly Saved", false);
 				}
 			}
 		});
@@ -227,6 +246,7 @@ function ProviderListController($scope, $http) {
 
 					$scope.sLocation.Services = [];
 
+					$scope.sService = "";
 					var ServicesID = data.DATA.SERVICESID[0].split('|');
 					var ServicesName = data.DATA.SERVICESNAME[0].split('|');
 
@@ -273,10 +293,13 @@ function ProviderListController($scope, $http) {
 			'success' : function(result) {
 				//$('#LocationSaveResult').text(result);
 				
+				
 				if(LocID == -1){
 					$scope.Providers[$scope.sProvider.ArrayIndex].LocCount++;
 					$scope.$apply();
 					$scope.SelectProvider($scope.sProvider.ArrayIndex);
+				} else{
+					$scope.ShowMessage("Success", "Location Successfuly Saved", false);
 				}
 				
 			}
@@ -330,7 +353,6 @@ function ProviderListController($scope, $http) {
 				id : LocId,
 			}),
 			'success' : function(result) {
-				//$('#LocationSaveResult').text(result);
 				
 				$scope.Providers[$scope.sProvider.ArrayIndex].LocCount--;
 				
@@ -406,7 +428,8 @@ function ProviderListController($scope, $http) {
 				$scope.sLocation.Geo_Lat =  parseFloat(splitres["2"]);
 				$scope.sLocation.Geo_Lng =  parseFloat(splitres["3"]);
 				$scope.UpdateMap();
-				$scope.$apply();
+				
+				$scope.ShowMessage("Success", "Address Successfully Geolocated", false);
 			}
 		});
 	}
