@@ -67,8 +67,10 @@
 				<cfelseif PageReq Eq "services">
 					<cfset ActiveTab = "Services">
 					<cfinclude template="include/editservices.cfm">
-				<cfelse>
+				<cfelseif PageReq Eq "general">
 					<cfinclude template="include/editgeneral.cfm">
+				<cfelse>
+					<cfinclude template="include/editproviders.cfm">
 				</cfif>
 			</div>
 		</div>

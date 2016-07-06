@@ -10,9 +10,8 @@
 <cfif Req EQ "getallproviders">
 
 
-	<cfset Offset = form.Offset>
-	<cfset Count = form.ResultCount>
-
+	<cfset Offset = LSParseNumber(form.Offset)>
+	<cfset Count = LSParseNumber(form.ResultCount)>
 
 	<cfinvoke component="dbQueries" method="GetAllProviders" returnvariable="Allproviders">
 		<cfinvokeargument name="Offset" value="#Offset#">
@@ -31,7 +30,7 @@
 	</cfif>
 
 
-	<cfset NewProviderID = form.provid >
+	<cfset NewProviderID = LSParseNumber(form.provid) >
 	<cfinvoke component="dbQueries" method="GetProvider" returnvariable="Provider">
 		<cfinvokeargument name="ProviderId" value="#NewProviderID#">
 	</cfinvoke>
@@ -46,7 +45,7 @@
 	<cfif NOT isDefined("form.locid")>
 		<cfthrow message="POST Data locid Not Found">
 	</cfif>
-	<cfset NewLocationID = form.locid >
+	<cfset NewLocationID = LSParseNumber(form.locid) >
 
 
 	<cfinvoke component="dbQueries" method="GetLocation" returnvariable="Location">
@@ -65,15 +64,15 @@
 			<cfthrow message="POST Data missing">
 		</cfif>
 
-		<cfset ID =form.id >
+		<cfset ID = LSParseNumber(form.id) >
 		<cfset Address = form.addr>
 		<cfset Phone =form.phone>
-		<cfset GeoLat =form.geolat>
-		<cfset GeoLng =form.geolng>
-		<cfset Hours =form.hours>
+		<cfset GeoLat = form.geolat>
+		<cfset GeoLng = form.geolng>
+		<cfset Hours = form.hours>
 
 		<cfif ID Eq -1>
-			<cfset ProviderId = form.provid>
+			<cfset ProviderId = LSParseNumber(form.provid)>
 
 			<cfinvoke component="dbQueries" method="CreateLocation" >
 				<cfinvokeargument name="ProviderID" value="#ProviderId#">
@@ -106,7 +105,7 @@
 		<cfthrow>
 	</cfif>
 
-	<cfset ProvID = form.id >
+	<cfset ProvID = LSParseNumber(form.id) >
 	<cfset ProvName = form.name>
 	<cfset ProvWebsite = form.website>
 	<cfset ProvDesc = form.desc >
@@ -150,7 +149,7 @@
 			<cfthrow>
 		</cfif>
 
-		<cfset ServID =form.id >
+		<cfset ServID = LSParseNumber(form.id) >
 		<cfset ServName =form.name>
 
 
@@ -165,7 +164,7 @@
 			<cfthrow>
 		</cfif>
 
-		<cfset LocId =form.id >
+		<cfset LocId = LSParseNumber(form.id) >
 
 	<cfinvoke component="dbQueries" method="DeleteLocation">
 		<cfinvokeargument name="LocationId" value="#LocId#">
@@ -178,7 +177,7 @@
 			<cfthrow>
 		</cfif>
 
-		<cfset ProvId =form.id >
+		<cfset ProvId = LSParseNumber(form.id) >
 
 	<cfinvoke component="dbQueries" method="DeleteProvider">
 		<cfinvokeargument name="ProviderId" value="#ProvId#">
@@ -198,7 +197,7 @@
 			<cfthrow>
 	</cfif>
 
-		<cfset LocId =form.locid >
+		<cfset LocId = LSParseNumber(form.locid) >
 		<cfset ServName =form.servname >
 
 	<cfinvoke component="dbQueries" method="AddService">
@@ -213,8 +212,8 @@
 			<cfthrow>
 	</cfif>
 
-		<cfset LocId =form.locid >
-		<cfset ServicesId =form.servids >
+		<cfset LocId = LSParseNumber(form.locid) >
+		<cfset ServicesId = form.servids >
 
 	<cfinvoke component="dbQueries" method="RemoveService">
 		<cfinvokeargument name="LocId" value="#LocId#">
@@ -227,7 +226,7 @@
 			<cfthrow>
 	</cfif>
 
-	<cfset ServiceId =form.servid >
+	<cfset ServiceId = LSParseNumber(form.servid) >
 
 	<cfinvoke component="dbQueries" method="DeleteService">
 		<cfinvokeargument name="ServId" value="#ServiceId#">
@@ -239,7 +238,8 @@
 			<cfthrow>
 	</cfif>
 
-	<cfset ProvId = form.provid >
+	<cfset ProvId = LSParseNumber(form.provid) >
+
 
 	<cfinvoke component="dbQueries" method="GetProviderOffset" returnvariable="ProviderOffset">
 		<cfinvokeargument name="ProvId" value="#ProvId#">
