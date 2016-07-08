@@ -17,18 +17,22 @@
 				<cfinclude template="loginform.cfm">
 				<cfabort>
 			<cfelse>
+				
 				<cfset loginhash = Hash(cflogin.password & "kdh", "SHA") >
 				<cfif cflogin.name Eq "admin" AND loginhash Eq "86ac557d4dafda96ae43dbdbf19a865c4e6fab40">
 					<cfloginuser name="#cflogin.name#" Password = "#loginhash#" Roles="admin">
 				<cfelse>
 					<cfoutput>
-						<H2>
+						<cfinclude template="loginform.cfm">
+						
+						<div class="alert alert-danger center-block" style="width:350px;">
+							
 							Your login information is not valid.
-							<br>
-							Please Try again
-						</H2>
+							
+						</div>
+						
 					</cfoutput>
-					<cfinclude template="loginform.cfm">
+					
 					<cfabort>
 				</cfif>
 			</cfif>
