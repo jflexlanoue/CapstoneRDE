@@ -133,14 +133,18 @@
 								<span class="glyphicon glyphicon-fast-backward" style="">
 								</span>
 							</button>
-							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('prev')" ng-class="{disabled : ProviderPage.PageCurrent == 1}">
-								{{ProviderPage.PageCurrent - 1}}
+							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('prev')"  ng-class="{disabled : ProviderPage.PageCurrent == 1}">
+								<span ng-show="ProviderPage.PageCurrent != 1">{{ProviderPage.PageCurrent - 1}}</span>
+								<span ng-show="ProviderPage.PageCurrent == 1">-</span>
 							</button>
 							<button type="button" class="btn btn-primary btn-sm" >
 								{{ProviderPage.PageCurrent}}
 							</button>
 							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('next')" ng-class="{disabled : ProviderPage.PageCurrent == ProviderPage.PageMax}">
-								{{ProviderPage.PageCurrent + 1}}
+								
+								<span ng-show="ProviderPage.PageCurrent != ProviderPage.PageMax">{{ProviderPage.PageCurrent + 1}}</span>
+								
+								<span ng-show="ProviderPage.PageCurrent == ProviderPage.PageMax">-</span>
 							</button>
 							<button type="button" class="btn btn-default btn-sm" ng-click="SwitchPage('last')" ng-class="{disabled : ProviderPage.PageCurrent == ProviderPage.PageMax}">
 								<span class="glyphicon glyphicon-fast-forward" style="">
