@@ -9,8 +9,6 @@
 
 <cfset locID = url.locid>
 
-<cftry>
-
 
 <cfquery name = "LocServices" dataSource = "CapstoneNJITSummer2016_data">
 			Select serv.name
@@ -24,7 +22,3 @@
 	#SerializeJSON(LocServices,true)#
 </cfoutput>
 
-	<cfcatch>
-
-	</cfcatch>
-</cftry>
