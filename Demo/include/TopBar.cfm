@@ -10,7 +10,7 @@
 <!--- Main Search Bar --->
 <div class="row" >
 	<div class="col-xs-1 " style="padding:0px; margin:0px; padding-left:18px;  top: 15px;  font-size: 1.5em;" >
-		<a style="cursor:pointer; color:white" onclick="$('#IntroductionMessage').toggle();">
+		<a style="cursor:pointer; color:white"  data-toggle="collapse" data-target="#IntroductionMessage" >
 			<span  aria-label="What is this?" class="glyphicon glyphicon-question-sign" >
 			</span>
 		</a>
