@@ -11,7 +11,7 @@
 			body {height:100vh;} #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; } td { padding-bottom:15px; padding-right:15px; } input { }
 		</style>
 		<title>
-			HIV Resource Guide - Admin
+			Resource Guide - Login
 		</title>
 		
 		
@@ -25,10 +25,7 @@
 	<cfif isDefined("url.p")>
 		<cfset PageReq = url.p>
 	</cfif>
-	
-	
-	
-	
+
 	<body style="background-color:#DDDDDD ;  min-width:1000px" >
 		<div class="container-fluid"  >
 			<nav class="navbar navbar-inverse" >
@@ -36,7 +33,7 @@
 					<a href="?p=general">
 						<div class="navbar-header">
 							<span class="navbar-brand" style="cursor:pointer;" onclick="" >
-								HIV Res. Guide Admin Panel
+								Resource Guide Admin Panel
 							</span>
 						</div>
 					</a>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -13,13 +11,12 @@
 			body {height:100vh;}   td { padding-bottom:15px; padding-right:15px; }
 		</style>
 		<title>
-			HIV Resource Guide - Admin Panel
+			Resource Guide - Admin Panel
 		</title>
 
 		<script src="../lib/jquery/1.12.2/jquery.min.js"></script>
 		<script src="../lib/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 		
-
 	</head>
 
 	
@@ -30,7 +27,7 @@
 					<a >
 						<div class="navbar-header">
 							<span class="navbar-brand" style="cursor:pointer;" onclick="" >
-								HIV Res. Guide Admin Panel
+								Resource Guide Admin Panel
 							</span>
 						</div>
 					</a>
