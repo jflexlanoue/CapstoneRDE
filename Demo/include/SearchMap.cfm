@@ -1,4 +1,4 @@
-<table style="height:100%; width:100%">
+<table style="height:100%; width:100%" id="SearchMap">
 	<tbody style="100%">
 		<tr style="height:20px;">
 			<td style="height:20px; background-color:#f5f5f5">

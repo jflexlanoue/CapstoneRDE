@@ -35,31 +35,19 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 		function setLayoutSize(){
 		 
 			 if($scope.mobile){
-			 	$("#srDiv").css({"overflow":"hidden","height":"auto"})
-			 	
+				 //$("body").css({"overflow":"scroll"})
+			 	//$("#srDiv").css({"overflow":"auto"})
 			 } else{
-			  	$("#srDiv").css({"overflow":"auto","height":"100%"});
-			  	
+				// $("body").css({"overflow":"hidden"})
+			  	//$("#srDiv").css({"overflow":"auto"});
 			 }
 		}
 		
 
-/*
-		 	//Structure for 1 Entry of the Search Results
-             $scope.searchResult = {
-             			Index: "",
-                		Name : "",
-                		WebSite : "",
-                		Hours : "",
-                		Phone : "",
-                		Address : "",
-                		Lat : "",
-                		Long : "",
-                		Service: "",
-                		ServiceMatch: "",
-                		Marker: ""
-             }; 
-*/ 
+
+		
+		
+		
              $scope.markers = [];
 
 

@@ -49,14 +49,14 @@
 						<label for="ProviderSearch">
 							Any of these Providers:
 						</label>
-						<select class="search-providers form-control selectpicker js-example-responsive" style="width:90%"  multiple="multiple" id="ProviderSearch">
+						<select class="search-providers form-control selectpicker js-example-responsive" style="width:90%"  multiple="multiple" id="ProviderSearch" onchange="FixLayout()">
 						</select>
 					</div>
 					<div class="form-group" >
 						<label for="ServiceSearch">
 							Any of these Services:
 						</label>
-						<select class="search-services form-control selectpicker js-example-responsive" style="width:90%" multiple="multiple" id="ServiceSearch">
+						<select class="search-services form-control selectpicker js-example-responsive" style="width:90%" multiple="multiple" id="ServiceSearch" onchange="FixLayout()">
 						</select>
 					</div>
 				</form>

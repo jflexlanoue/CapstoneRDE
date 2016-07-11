@@ -1,4 +1,4 @@
-<div class="" id="srDiv" style="overflow:scroll; height:100% "  >
+<div class="" id="srDiv" style="overflow-y:scroll; height:100%;"  >
 	<div ng-show="mobile" id="ResultsFound" style="padding-bottom:5px;width:300px;" class="center-block">
 		Results
 		<span class="badge" id="resultcountXS">

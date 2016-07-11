@@ -5,7 +5,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link href="lib/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
 		<style type="text/css">
-			body {height:100vh;} #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; }
+			 #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; }
 		</style>
 		<title>
 			HIV Resource Guide
@@ -30,16 +30,11 @@
 
                 var FirstTimeVisit = localStorage.getItem("firsttimevisit");
 
-
                 if (FirstTimeVisit === null) {
                     $("#IntroductionMessage").collapse("show");
                 }
 
-
                 localStorage.setItem("firsttimevisit", "no");
-
-
-
 
 //Load Provider Data for Advanced Search
                 var providerData = [];
@@ -144,6 +139,23 @@
 
                     angular.element($('#myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','));
                 });
+
+
+				$(".collapse").on('shown.bs.collapse', function(){
+			        FixLayout();
+			    });
+
+				$(".collapse").on('hidden.bs.collapse', function(){
+			        FixLayout();
+			    });
+
+			    $(".collapse").on('hide.bs.collapse', function(){
+			        $("#srDiv").height("100%");
+					$("#SearchMap").height("100%");
+			    });
+
+			FixLayout();
+
             });
 
 
@@ -151,12 +163,26 @@
 				window.location = ".";
 			};
 
+			function FixLayout(){
 
+				var WindowH = window.innerHeight;
+
+				var TopBannerH = $("#TopSearchBar").height();
+				var IntroMessageH = $("#IntroMsgRow").height();
+
+				var NewH = WindowH;
+				NewH -= TopBannerH ;
+				NewH -= 6;
+				NewH -= IntroMessageH;
+
+				$("#srDiv").height(NewH);
+				$("#SearchMap").height(NewH);
+			};
 
 
         </script>
 	</head>
-	<body ng-app="myModule" style="background-color:#DDDDDD ; min-width:300px; ">
+	<body ng-app="myModule" style=" height:100vh; background-color:#DDDDDD ; min-width:300px; overflow:hidden; " onresize="FixLayout()">
 		<div class="container-fluid" style="height:100%" >
 			<table ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv" style="height:100%;width:100%;  ">
 				<tbody style="height:100%">
@@ -174,18 +200,18 @@
 							<cfinclude template="include/TopBar.cfm">
 						</td>
 					</tr>
-					<tr style="height:0px;"  >
+					<tr style="height:0px;" Id="IntroMsgRow"  >
 						<td colspan="2"   >
 							<cfinclude template="include/WelcomeAlert.cfm">
 						</td>
 					</tr>
-					<tr  id="SearchBody">
-						<td style="width:350px; padding-top:5px; padding-right:5px; height:80%" valign="top">
+					<tr id="SearchBody" >
+						<td style="width:350px; padding-top:5px; padding-right:5px; height:20px; vertical-align:top;" >
 							<!---  Full Screen Modal View  --->
 							<cfinclude template="include/InfoModal.cfm">
 							<cfinclude template="include/SearchCards.cfm">
 						</td>
-						<td style="height:80%; padding-top:5px;" ng-show="desktop" >
+						<td style="height:80%; padding-top:5px; vertical-align:top;" ng-show="desktop" >
 							<cfinclude template="include/SearchMap.cfm">
 						</td>
 					</tr>
