@@ -1,5 +1,6 @@
 <div class="row" >
 	<div class="col-xs-offset-1"  >
+
 		<h2 style="color:white; padding:0px; padding-right:15px; margin:0px; margin-top:5px;"  >
 			<span style="cursor:pointer;" onclick="refreshPage();">
 				HIV Resource Guide
@@ -15,7 +16,7 @@
 			</span>
 		</a>
 	</div>
-	<div class="col-xs-10  col-sm-5 col-sm-offset-2" style="padding-bottom:0px; " >
+	<div class="col-xs-10  col-sm-5 col-sm-offset-2 " id="SearchBar" style="padding-bottom:0px;" >
 		<form>
 			<div id="BasicSearch" class="input-group " style="margin:0px;" >
 				<input class="form-control search-terms" placeholder="Search" type="text" autofocus="autofocus" />

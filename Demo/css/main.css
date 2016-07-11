@@ -1,0 +1,33 @@
+
+body {
+	height: 100vh;
+	background-color:#DDDDDD;
+	min-width:300px;
+	
+}
+
+
+.BodyDesktop {
+				overflow:hidden;
+			}
+
+
+.srDivDesktop {
+	overflow-y:scroll;
+}
+
+
+#map2 { 
+	height:300px; 
+	width:450px; 
+} 
+
+.search-results { 
+	list-style-type: none !important; 
+}
+
+.SearchBar {
+	
+	
+	
+}

@@ -1,5 +1,6 @@
+
 <div class="modal fade" id="service-info" tabindex='-1'  >
-	<div class="modal-dialog modal-lg center-block" style="">
+	<div class="modal-dialog modal-lg center-block">
 		<div class="modal-content" >
 			<div class="modal-header" >
 				<button type="button" class="close" data-dismiss="modal">

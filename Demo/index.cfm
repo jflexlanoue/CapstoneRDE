@@ -4,21 +4,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link href="lib/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
-		<style type="text/css">
 
 
-			.BodyDesktop {
-				overflow:hidden;
-			}
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 
 
-			.srDivDesktop {
-				overflow-y:scroll;
-			}
-
-
-			 #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; }
-		</style>
 		<title>
 			HIV Resource Guide
 		</title>
@@ -196,10 +186,10 @@
 	</head>
 
 
-	<body ng-app="myModule" style=" height:100vh; min-width:300px; background-color:#DDDDDD; " onresize="FixLayout()">
+	<body ng-app="myModule" onresize="FixLayout()">
 		<div class="container-fluid" ng-class="{'BodyDesktop' : desktop}" style="height:100% ; " ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv"  >
 
-			<table style="height:100%;width:100%;"  >
+			<table style="height:100%; width:100%;"  >
 				<tbody style="height:100%">
 					<!---  	____________
 						|||||||||||||
