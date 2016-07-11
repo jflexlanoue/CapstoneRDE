@@ -5,6 +5,18 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link href="lib/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
 		<style type="text/css">
+
+
+			.BodyDesktop {
+				overflow:hidden;
+			}
+
+
+			.srDivDesktop {
+				overflow-y:scroll;
+			}
+
+
 			 #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; }
 		</style>
 		<title>
@@ -154,7 +166,7 @@
 					$("#SearchMap").height("100%");
 			    });
 
-			FixLayout();
+				FixLayout();
 
             });
 
@@ -164,7 +176,7 @@
 			};
 
 			function FixLayout(){
-
+				console.log("Fixed Layout");
 				var WindowH = window.innerHeight;
 
 				var TopBannerH = $("#TopSearchBar").height();
@@ -182,9 +194,12 @@
 
         </script>
 	</head>
-	<body ng-app="myModule" style=" height:100vh; background-color:#DDDDDD ; min-width:300px; overflow:hidden; " onresize="FixLayout()">
-		<div class="container-fluid" style="height:100%" >
-			<table ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv" style="height:100%;width:100%;  ">
+
+
+	<body ng-app="myModule" style=" height:100vh; min-width:300px; background-color:#DDDDDD; " onresize="FixLayout()">
+		<div class="container-fluid" ng-class="{'BodyDesktop' : desktop}" style="height:100% ; " ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv"  >
+
+			<table style="height:100%;width:100%;"  >
 				<tbody style="height:100%">
 					<!---  	____________
 						|||||||||||||
@@ -206,7 +221,7 @@
 						</td>
 					</tr>
 					<tr id="SearchBody" >
-						<td style="width:350px; padding-top:5px; padding-right:5px; height:20px; vertical-align:top;" >
+						<td style="width:350px; padding-top:5px; padding-right:5px; height:100%; vertical-align:top;" >
 							<!---  Full Screen Modal View  --->
 							<cfinclude template="include/InfoModal.cfm">
 							<cfinclude template="include/SearchCards.cfm">

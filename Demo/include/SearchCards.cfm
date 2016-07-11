@@ -1,4 +1,6 @@
-<div class="" id="srDiv" style="overflow-y:scroll; height:100%;"  >
+
+
+<div id="srDiv" style="height:100%; " ng-class="{'srDivDesktop' : desktop}"    >
 	<div ng-show="mobile" id="ResultsFound" style="padding-bottom:5px;width:300px;" class="center-block">
 		Results
 		<span class="badge" id="resultcountXS">

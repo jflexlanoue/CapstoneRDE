@@ -12,9 +12,6 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 	 	 $scope.desktop = false;
 	 }
 	 
-	setLayoutSize();
-
-
 	  $scope.pageChanged = function() {	
 	     	$('#srDiv').scrollTop(0);
 	     	$('body').scrollTop(0);
@@ -23,31 +20,13 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 
 	 $scope.desktop = screenSize.on('sm, md, lg', function(match){
 		    $scope.desktop = match;
-		     setLayoutSize();
+		     
 		});
-	$scope.mobile = screenSize.on('xs', function(match){
+	 
+	 $scope.mobile = screenSize.on('xs', function(match){
 		    $scope.mobile = match;
-		    
-		    setLayoutSize();
-		   
 		});
 
-		function setLayoutSize(){
-		 
-			 if($scope.mobile){
-				 //$("body").css({"overflow":"scroll"})
-			 	//$("#srDiv").css({"overflow":"auto"})
-			 } else{
-				// $("body").css({"overflow":"hidden"})
-			  	//$("#srDiv").css({"overflow":"auto"});
-			 }
-		}
-		
-
-
-		
-		
-		
              $scope.markers = [];
 
 
