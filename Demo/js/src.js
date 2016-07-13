@@ -88,7 +88,7 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
        		 }
 
 
-       		 $scope.getFilteredData = function(searchTerms, searchProviders, searchServices) {
+       		 $scope.getFilteredData = function(searchTerms, searchProviders, searchServices, userLoc, advanceSearchTerm) {
 
 
        			 console.log("Requesting Data For Search: Term=" + searchTerms + " Services=" + searchServices + " Providers=" + searchProviders);
@@ -114,29 +114,63 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 						
 						var bounds = new google.maps.LatLngBounds();
 						
-	            		for (var i =0; i < data.ROWCOUNT; i++) {
-	            				var sr = {
-	            						Index : i,
-	                    				Name : data.DATA.NAME[i],
-	                            		WebSite : data.DATA.WEBSITE[i],
-	                            		Hours : data.DATA.HOURS[i],
-	                            		Phone : data.DATA.PHONE[i],
-	                            		Address : data.DATA.ADDRESS[i],
-	                            		Lat : data.DATA.GEO_LAT[i],
-	                            		Long : data.DATA.GEO_LNG[i],
-	                            		Service: data.DATA.SERVICES[i].split("|"),
-	                            		ServiceMatch: data.DATA.SERVICESMATCH[i]
-	                    			};
-	
-								
-	                    		sr.Marker = $scope.createGeoMarker(sr, true);
-	                    		$scope.searchResults.push(sr);
-	                    		
-	                    		bounds.extend(new google.maps.LatLng(sr.Lat,sr.Long));
-	                    }
+	            for (var i =0; i < data.ROWCOUNT; i++) {
+    			var storeResult = 0;
+
+    			if (advanceSearchTerm != 0) {
+    	
+    				var recData = new google.maps.LatLng(data.DATA.GEO_LAT[i],data.DATA.GEO_LNG[i]);
+      
+    				if (typeof(userLoc) != "undefined" && typeof(userLoc.lat) != "undefined") { 
+    					storeResult = calcDistance(userLoc,recData); 
+    					
+    				}
+
+                      if (parseInt(storeResult) <= parseInt(advanceSearchTerm)) {
+                           var sr = {
+                          Index : i,
+                              Name : data.DATA.NAME[i],
+                                  WebSite : data.DATA.WEBSITE[i],
+                                  Hours : data.DATA.HOURS[i],
+                                  Phone : data.DATA.PHONE[i],
+                                  Address : data.DATA.ADDRESS[i],
+                                  Lat : data.DATA.GEO_LAT[i],
+                                  Long : data.DATA.GEO_LNG[i],
+                                  Service: data.DATA.SERVICES[i].replace(/\|/g,'<br />'),
+                                  ServiceMatch: data.DATA.SERVICESMATCH[i]
+                            };
+                        
+                             sr.Marker = $scope.createGeoMarker(sr, true); 
+                             $scope.searchResults.push(sr);
+                             bounds.extend(new google.maps.LatLng(sr.Lat,sr.Long));
+                       }   
+                    }
+                    else {
+
+                         var sr = {
+                                  Index : i,
+                           		  Name : data.DATA.NAME[i],
+                                  WebSite : data.DATA.WEBSITE[i],
+                                  Hours : data.DATA.HOURS[i],
+                                  Phone : data.DATA.PHONE[i],
+                                  Address : data.DATA.ADDRESS[i],
+                                  Lat : data.DATA.GEO_LAT[i],
+                                  Long : data.DATA.GEO_LNG[i],
+                                  Service: data.DATA.SERVICES[i].replace(/\|/g,'<br />'),
+                                  ServiceMatch: data.DATA.SERVICESMATCH[i]
+                            };
+                        
+                          sr.Marker = $scope.createGeoMarker(sr, true); 
+                          $scope.searchResults.push(sr);
+                          bounds.extend(new google.maps.LatLng(sr.Lat,sr.Long));
+                      
+                    }
+
+                      
+                    }
                     	
                     	$("#resultcount").text(data.ROWCOUNT);
-  						$("#resultcountXS").text(data.ROWCOUNT);
+  			$("#resultcountXS").text(data.ROWCOUNT);
   					
                     if(data.ROWCOUNT == 0){
                     	$("#NoResultsWarning").removeClass('hidden');
@@ -276,6 +310,6 @@ var app = angular.module("myModule", ['angularUtils.directives.dirPagination','n
 
     //on select view info window
     var infoWindow = new google.maps.InfoWindow();
-    $scope.getFilteredData("", "", "");
+    $scope.getFilteredData("", "", "", "", "");
 });
 
