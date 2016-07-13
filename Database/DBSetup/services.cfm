@@ -171,7 +171,7 @@ INSERT INTO Service (name) VALUES ('Optometric Services');
 INSERT INTO Service (name) VALUES ('Oral Health Care');
 INSERT INTO Service (name) VALUES ('Oral/Dental Health Care');
 INSERT INTO Service (name) VALUES ('Oraquick HIV Testing');
-INSERT INTO Service (name) VALUES ('Outpatient A&D/Substance Abuse Treatment');
+INSERT INTO Service (name) VALUES ('Outpatient & Substance Abuse Treatment');
 INSERT INTO Service (name) VALUES ('Outpatient Ambulatory Medical Care');
 INSERT INTO Service (name) VALUES ('Outpatient/Ambulatory Medical Care');
 INSERT INTO Service (name) VALUES ('Outreach');
