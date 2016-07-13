@@ -1,6 +1,6 @@
 
 
-<div id="srDiv" style="height:100%; " ng-class="{'srDivDesktop' : desktop}"    >
+<div id="srDiv"  style=" height:100%; padding-right:5px; " ng-class="{'srDivDesktop' : desktop}"    >
 	<div ng-show="mobile" id="ResultsFound" style="padding-bottom:5px;width:300px;" class="center-block">
 		Results
 		<span class="badge" id="resultcountXS">
