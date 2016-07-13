@@ -4,7 +4,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link href="lib/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
+
+
 		<link rel="stylesheet" type="text/css" href="css/main.css">
+
+
 		<title>
 			HIV Resource Guide
 		</title>
@@ -19,11 +23,17 @@
 		<script src="lib/bootstrap/ui-bootstrap-tpls-0.12.1.min.js" data-require="ui-bootstrap@*" data-semver="0.12.1" ></script>
 		<script src="lib/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
 		<script src="lib/select2/4.0.2/js/select2.min.js"></script>
+
 		<script src="js/AngularSrc.js"></script>
 		<script src="js/Common.js"></script>
+
+
 		<script type="text/javascript">
 
-			$(document).ready(function () {
+
+//Executes when the page First Loads
+            $(document).ready(function () {
+
 				$(".collapse").on('shown.bs.collapse', function(){
 			        FixLayout();
 			    });
@@ -80,19 +90,14 @@
 
         </script>
 	</head>
+
+
 	<body ng-app="myModule" onresize="FixLayout()">
 		<div class="container-fluid" ng-class="{'BodyDesktop' : desktop}" style="height:100% ; " ng-controller="myController" id="myCtrlDiv" name="myCtrlDiv"  >
+
 			<table style="height:100%; width:100%;"  >
 				<tbody style="height:100%">
-					<!---  	____________
-						|||||||||||||
-						|||||||||||||
-						|	        |
-						|	        |
-						|	        |
-						|	        |
-						|	        |
-						--->
+
 					<tr style="height:80px;" id="TopSearchBar">
 						<td colspan="2" style="background: url(img/nycskyline.jpg) no-repeat ; padding-bottom:10px; height:80px;">
 							<cfinclude template="include/SearchBar.cfm">
@@ -101,7 +106,7 @@
 					</tr>
 					<tr style="height:0px;" Id="IntroMsgRow"  >
 						<td colspan="2"   >
-							<cfinclude template="include/WelcomeAlert.cfm">
+
 						</td>
 					</tr>
 					<tr id="SearchBody" >
@@ -116,6 +121,10 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<div  style="position:fixed;  bottom:0px; right:20px;  width:345px; z-index:20;" Id="IntroMsgRow"  >
+					<cfinclude template="include/WelcomeAlert.cfm">
+			</div>
 		</div>
 	</body>
 </html>

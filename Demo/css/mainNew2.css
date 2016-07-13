@@ -1,0 +1,23 @@
+
+body {
+	height: 100vh;
+	background-color:#DDDDDD;
+	min-width:300px;
+	
+}
+
+
+.srDivDesktop {
+	overflow-y:scroll;
+}
+
+.DivSearchCards {
+	
+	float:left; 
+	
+}
+
+#map2 { 
+	height:300px; 
+	width:450px; 
+} 
