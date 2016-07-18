@@ -91,8 +91,6 @@ $(document)
 									"click",
 									function() {
 
-										$("#advancedSearch").collapse("hide");
-
 										var searchterms = $('.search-terms')
 												.val();
 										var searchProviders = [];
@@ -120,13 +118,7 @@ $(document)
 											}
 										}
 
-										angular.element($('#myCtrlDiv'))
-												.scope().getFilteredData(
-														searchterms,
-														searchProviders
-																.join(','),
-														searchServices
-																.join(','));
+										angular.element($('#myCtrlDiv')).scope().getFilteredData(searchterms,searchProviders.join(','),searchServices.join(','));
 									});
 
 				});

@@ -2,40 +2,38 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
-
+		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link href="lib/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
-
-
+		
+		
 		<style type="text/css">
 			body {height:100vh;} #map2 { height:300px; width:450px; } .search-results { list-style-type:none !important; }
 		</style>
 		<title>
 			HIV Resource Guide
 		</title>
-
+		
 		<script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&sensor=false"></script>
-
+		
 		<script src="lib/angularjs/1.4.8/angular.min.js"></script>
 		<script src="lib/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
-
+		
 		<script src="lib/angular-ui/0.4.0/angular-ui.min.js"></script>
 		<script src="lib/angular-media-queries/match-media.js"></script>
 		<script src="lib/dirPagination.js"></script>
 		<script src="lib/jquery/1.12.2/jquery.min.js"></script>
-
+		
 		<script src="lib/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 		<script src="lib/bootstrap/ui-bootstrap-tpls-0.12.1.min.js" data-require="ui-bootstrap@*" data-semver="0.12.1" ></script>
 		<script src="lib/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
-
-
+		
+		
 		<script src="lib/select2/4.0.2/js/select2.min.js"></script>
-
-
+		
+		
 		<script src="js/srcJ.js"></script>
-<script src="js/geo.js"></script>
-
-
+		
 		<script type="text/javascript">
 		var getUsrLoc;
 		var ipGetAdd;
@@ -154,16 +152,76 @@
                             searchServices.push(searchServicesData[i].id);
                         }
                     }
-
-					GeoStuff(searchterms, searchProviders, searchServices );
-
+                
+                var geocoder = new google.maps.Geocoder();    
+                var address = document.getElementById("cityZip").value;
+                var miles =  0;
+                var userLoc;
+               
+                if (document.getElementById("box").checked == true) {
+                	miles =  parseInt(document.getElementById("miles").value);
+                	
+                	if (typeof(getUsrLoc) != "undefined") {
+                		angular.element($('#myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','),getUsrLoc,miles);
+                	}
+                	else {
+	                	geocoder.geocode({ 'address': address }, function (results, status) {
+	                    	if (status == google.maps.GeocoderStatus.OK) {
+	                  		userLoc = new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng());
+					angular.element($('#myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','),userLoc,miles);                    
+	                    	} 
+	                    	else {
+	                  		angular.element($('#myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','),ipGetAdd,miles);
+	                    	}
+	                	});
+                	}
+			   	}  
+		  else {
+                    	angular.element($('#myCtrlDiv')).scope().getFilteredData(searchterms, searchProviders.join(','), searchServices.join(','),userLoc,miles);
+               		}
+               	    
                 });
             });
-		
+		$(function(){
+		$("#box").change(function(){
+			var ck = this.checked;
+			if(ck){
+			$("#miles,#cityZip,#geoButton").prop("disabled",false);
 
+			}else{
+			$("#miles,#cityZip,#geoButton").prop("disabled",true);
+			}
+		});
+	});	
+
+		function getLocation() {
+		    if (navigator.geolocation) {
+		        navigator.geolocation.watchPosition(showPosition);
+		    } else {
+		        alert("Geolocation is not supported by this browser.");
+		    }
+		}
+
+		function showPosition(position) {
+			 getUsrLoc = (new google.maps.LatLng(position.coords.latitude,position.coords.longitude));
+						 
+		}
+	
+		function refreshPage(){
+				window.location = ".";
+			}
+
+		function calcDistance(p1, p2) {
+	 			return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2)*0.000621371192).toFixed(2);
+			}
 		
+		//getting location through IP address of the user	
+		
+		$.get("http://ipinfo.io", function(response) {
+		      ipGetAdd = (new google.maps.LatLng(response.loc.split(',')[0],response.loc.split(',')[1]));
+		}, "jsonp");
         </script>
-
+        
 	</head>
 	<body ng-app="myModule" style="background-color:#DDDDDD ; min-width:300px; ">
 		<div class="container-fluid" style="height:100%">
